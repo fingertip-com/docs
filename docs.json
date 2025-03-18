@@ -7,7 +7,7 @@
     "light": "#F85628",
     "dark": "#F85628"
   },
-  "favicon": "/favicon.ico",
+  "favicon": "/favicon.svg",
   "navigation": {
     "groups": [
       {
