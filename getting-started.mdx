@@ -1,4 +1,80 @@
 ---
 title: Getting started
-description: "Welcome to the home of your new documentation"
+description: "Understand general concepts, response codes, and authentication strategies."
 ---
+
+## Base URL
+
+The Fingertip API is built on **REST** principles and enforces **HTTPS** for all requests to ensure data security, integrity, and privacy. The API does not support **HTTP**.
+
+All requests should be made to the following base URL:
+
+```
+https://ap1-production-creator-api.fingertip.com
+```
+
+## Authentication
+
+To authenticate with the Fingertip API, add an `Authorization` header to your requests. Your API key should be included directly in the header value. You can obtain an API key from [https://fingertip.com/account/api](https://fingertip.com/account/api).
+
+```
+Authorization: Bearer YOUR_API_KEY
+```
+
+## Response Codes
+
+Fingertip uses standard HTTP status codes to indicate the success or failure of API requests:
+
+| Status | Description                                                      |
+| ------ | ---------------------------------------------------------------- |
+| `200`  | Successful request                                               |
+| `400`  | Bad request - check that the parameters were correct             |
+| `401`  | Unauthorized - API key is missing or invalid                     |
+| `403`  | Forbidden - insufficient permissions for the requested operation |
+| `404`  | Not found - the requested resource doesn't exist                 |
+| `429`  | Too many requests - rate limit exceeded                          |
+| `5xx`  | Server error - indicates a problem with Fingertip servers        |
+
+## Rate Limits
+
+Fingertip API implements rate limiting to ensure service stability. If you exceed the rate limit, you'll receive a `429` response error code. Contact support if you need increased limits for your use case.
+
+## Endpoints
+
+### Health Check
+
+You can verify your API connectivity with a simple ping request:
+
+```bash
+curl --request GET \
+     --url https://ap1-production-creator-api.fingertip.com/api/v1/ping \
+     --header 'accept: application/json' \
+     --header 'authorization: Bearer YOUR_API_KEY'
+```
+
+A successful response indicates that your API key is valid and the service is available.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="What data formats does the API support?">
+    The API primarily accepts and returns data in JSON format.
+  </Accordion>
+
+<Accordion title="How should I handle errors?">
+  Always check the HTTP status code and response body for error details. The
+  response will typically include an error message explaining what went wrong.
+</Accordion>
+
+<Accordion title="Are there any usage limitations?">
+  In addition to rate limits, certain operations may have quotas or restrictions
+  based on your account plan. Refer to the specific endpoint documentation for
+  details.
+</Accordion>
+
+  <Accordion title="How can I get help if I encounter issues?">
+    For technical assistance, contact Fingertip support and include details about
+    the specific API call that's causing problems, along with any error messages
+    received.
+  </Accordion>
+</AccordionGroup>
