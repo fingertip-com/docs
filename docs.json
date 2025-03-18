@@ -12,7 +12,7 @@
     "groups": [
       {
         "group": "Using the API",
-        "pages": ["getting-started"]
+        "pages": ["getting-started", "node-quickstart"]
       },
       {
         "group": "Endpoints",

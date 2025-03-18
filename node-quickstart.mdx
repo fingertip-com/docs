@@ -1,0 +1,75 @@
+---
+title: Node.js Quickstart
+description: "Learn how to use the Fingertip Node.js SDK to interact with our API."
+---
+
+## Prerequisites
+
+To get the most out of this guide, you'll need to:
+
+- Create an API key at [fingertip.com/account/api](https://fingertip.com/account/api)
+
+## 1. Install
+
+Get the Fingertip Node.js SDK.
+
+<CodeGroup>
+
+```sh
+npm install fingertip
+```
+
+```sh
+yarn add fingertip
+```
+
+```sh
+pnpm add fingertip
+```
+
+</CodeGroup>
+
+## 2. Make your first API call
+
+The easiest way to verify your setup is with a ping request.
+
+```js
+import Fingertip from "fingertip";
+
+const client = new Fingertip({
+  apiKey: process.env["FINGERTIP_API_KEY"],
+});
+
+(async function () {
+  const response = await client.api.v1.ping();
+
+  if (response) {
+    console.log("API connection successful:", response.message);
+  }
+})();
+```
+
+## 3. Error handling
+
+Handle API errors with the built-in error types.
+
+```js
+import Fingertip from "fingertip";
+
+const client = new Fingertip({
+  apiKey: process.env["FINGERTIP_API_KEY"],
+});
+
+(async function () {
+  try {
+    const response = await client.api.v1.ping();
+    console.log("Success:", response);
+  } catch (error) {
+    if (error instanceof Fingertip.APIError) {
+      console.error("API Error:", error.name, error.status);
+    } else {
+      console.error("Unexpected error:", error);
+    }
+  }
+})();
+```
