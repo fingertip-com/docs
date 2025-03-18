@@ -54,7 +54,12 @@
               "openapi-specs/list-site-invitations",
               "openapi-specs/get-site-invitation-details",
               "openapi-specs/create-site-invitation",
-              "openapi-specs/delete-site-invitation",
+              "openapi-specs/delete-site-invitation"
+            ]
+          },
+          {
+            "group": "Site contacts",
+            "pages": [
               "openapi-specs/get-sample-site-contacts",
               "openapi-specs/create-a-site-contact"
             ]
@@ -82,11 +87,12 @@
             ]
           },
           {
-            "group": "Forms & Bookings",
-            "pages": [
-              "openapi-specs/get-sample-form-responses",
-              "openapi-specs/get-bookings-for-a-site"
-            ]
+            "group": "Forms",
+            "pages": ["openapi-specs/get-sample-form-responses"]
+          },
+          {
+            "group": "Bookings",
+            "pages": ["openapi-specs/get-bookings-for-a-site"]
           },
           {
             "group": "Integrations",
