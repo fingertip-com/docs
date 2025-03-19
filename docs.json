@@ -12,7 +12,12 @@
     "groups": [
       {
         "group": "Using the API",
-        "pages": ["getting-started", "node-quickstart", "mcp-quickstart"]
+        "pages": [
+          "getting-started",
+          "node-quickstart",
+          "mcp-quickstart",
+          "zapier-quickstart"
+        ]
       },
       {
         "group": "API Reference",
