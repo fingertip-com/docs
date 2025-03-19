@@ -10,8 +10,7 @@ Model Context Protocol (MCP) is a way for AI assistants to access tools outside 
 - See all your Fingertip sites
 - Get details about specific sites
 - Create new sites
-
-Think of it as giving the AI a set of commands to work with your Fingertip account.
+  Think of it as giving the AI a set of commands to work with your Fingertip account.
 
 ## Installation
 
@@ -42,6 +41,41 @@ fingertip-mcp
 ```
 
 That's it! Now when you chat with an AI assistant, it can access your Fingertip sites.
+
+## Setting up with Claude Desktop
+
+To use Fingertip MCP with Claude Desktop:
+
+1. **Install Claude Desktop** if you haven't already (available for macOS and Windows)
+
+2. **Install Fingertip MCP** using one of these methods:
+
+   **Method 1: Automatic setup with Smithery (recommended)**
+
+   ```bash
+   npx -y @smithery/cli install @fingertip-com/fingertip-mcp --client claude
+   ```
+
+   This automatically configures everything for Claude.
+
+   **Method 2: Manual setup**
+
+   ```bash
+   # Install the package
+   npm install -g @fingertip/mcp
+
+   # Start the MCP server in a terminal
+   FINGERTIP_API_KEY=your_api_key_here fingertip-mcp
+   ```
+
+3. **Open Claude Desktop** and you'll see "Fingertip" in the available tools section
+
+4. **Verify it's working** by asking Claude "What Fingertip sites do I have?"
+
+5. **Troubleshooting**:
+   - Make sure the MCP server is running when using Claude
+   - Restart Claude Desktop if tools aren't appearing
+   - Check your API key is correct
 
 ## Available Tools
 
@@ -82,13 +116,9 @@ Makes a new site.
 ## Example Conversation
 
 You: "Can you create a new bakery website for me?"
-
 AI: "I'd be happy to help create a bakery website. What would you like to name it?"
-
 You: "Sarah's Sweet Treats"
-
 AI: _uses MCP to create a new Fingertip site_
-
 AI: "Great! I've created a new site called 'Sarah's Sweet Treats'. You can view it at https://sarahs-sweet-treats.fingertip.com"
 
 ## Requirements
