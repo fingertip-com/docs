@@ -1,3 +1,6 @@
+Here's the updated .mdx file with information about obtaining the API token:
+
+````mdx
 ---
 title: "MCP quickstart"
 description: "Enabling AI assistants to manage your Fingertip sites"
@@ -10,115 +13,90 @@ Model Context Protocol (MCP) is a way for AI assistants to access tools outside 
 - See all your Fingertip sites
 - Get details about specific sites
 - Create new sites
-  Think of it as giving the AI a set of commands to work with your Fingertip account.
 
-## Installation
+Think of it as giving the AI a set of commands to work with your Fingertip account.
 
-Install globally:
+## Getting Your API Key
 
-```bash
-npm install -g @fingertip/mcp
-```
+Get your API key from [fingertip.com/account/api](https://fingertip.com/account/api). Log in, generate a key, and use it during setup. Keep it secure.
 
-Or use Smithery for automatic setup with Claude:
+## Setting up with AI assistants
 
-```bash
-npx -y @smithery/cli install @fingertip-com/fingertip-mcp --client claude
-```
-
-## Quick Start
-
-1. Set your API key:
-
-```bash
-export FINGERTIP_API_KEY=your_api_key_here
-```
-
-2. Start the MCP server:
-
-```bash
-fingertip-mcp
-```
-
-That's it! Now when you chat with an AI assistant, it can access your Fingertip sites.
-
-## Setting up with Claude Desktop
+### Claude Desktop
 
 To use Fingertip MCP with Claude Desktop:
 
 1. **Install Claude Desktop** if you haven't already (available for macOS and Windows)
-
-2. **Install Fingertip MCP** using one of these methods:
-
-   **Method 1: Automatic setup with Smithery (recommended)**
-
+2. **Install Fingertip MCP** with Smithery:
    ```bash
-   npx -y @smithery/cli install @fingertip-com/fingertip-mcp --client claude
+   npx -y @smithery/cli@latest install @fingertip-com/fingertip-mcp --client claude
    ```
-
-   This automatically configures everything for Claude.
-
-   **Method 2: Manual setup**
-
-   ```bash
-   # Install the package
-   npm install -g @fingertip/mcp
-
-   # Start the MCP server in a terminal
-   FINGERTIP_API_KEY=your_api_key_here fingertip-mcp
-   ```
+````
 
 3. **Open Claude Desktop** and you'll see "Fingertip" in the available tools section
-
 4. **Verify it's working** by asking Claude "What Fingertip sites do I have?"
-
 5. **Troubleshooting**:
    - Make sure the MCP server is running when using Claude
    - Restart Claude Desktop if tools aren't appearing
    - Check your API key is correct
 
+### Cursor
+
+To use Fingertip MCP with Cursor:
+
+1. **Install Cursor** if you haven't already
+2. **Install Fingertip MCP** with Smithery:
+   ```bash
+   npx -y @smithery/cli@latest install @fingertip-com/fingertip-mcp --client cursor
+   ```
+3. **Open Cursor** and the Fingertip tools will be available
+4. **Verify it's working** by asking Cursor about your Fingertip sites
+5. **Troubleshooting**:
+   - Ensure the MCP server is running when using Cursor
+   - Restart Cursor if tools don't appear
+   - Verify your API key is correctly configured
+
+### Direct Configuration with npx
+
+You can also manually set up Fingertip MCP by configuring your AI assistant's tools JSON directly:
+
+1. Add the following configuration to your assistant's tools configuration file:
+   ```json
+   {
+     "fingertip-mcp": {
+       "command": "npx",
+       "args": ["-y", "@fingertip/mcp"],
+       "env": {
+         "FINGERTIP_API_KEY": "YOUR_API_KEY_HERE"
+       }
+     }
+   }
+   ```
+2. Replace `YOUR_API_KEY_HERE` with your actual Fingertip API key
+3. Restart your AI assistant for changes to take effect
+
 ## Available Tools
 
-### get-sites
-
-Lists your Fingertip sites.
-
-```json
-{
-  "pageSize": 10, // optional
-  "cursor": "abc123" // optional, for pagination
-}
-```
-
-### get-site
-
-Gets details about one site.
-
-```json
-{
-  "siteId": "550e8400-e29b-41d4-a716-446655440000"
-}
-```
-
-### create-site
-
-Makes a new site.
-
-```json
-{
-  "name": "My Coffee Shop",
-  "slug": "my-coffee-shop",
-  "businessType": "cafe",
-  "description": "Specialty coffee in Portland" // optional
-}
-```
+- get-sites: Get a list of sites
+- get-site: Get a specific site by ID
+- create-site: Create a new site
+- get-page: Get a specific page by ID
+- update-page: Update a specific page
+- get-page-blocks: Get all blocks for a specific page
+- get-page-theme: Get the theme for a specific page
+- update-page-theme: Update the theme for a specific page
+- update-block: Update a specific block
 
 ## Example Conversation
 
 You: "Can you create a new bakery website for me?"
+
 AI: "I'd be happy to help create a bakery website. What would you like to name it?"
+
 You: "Sarah's Sweet Treats"
+
 AI: _uses MCP to create a new Fingertip site_
+
 AI: "Great! I've created a new site called 'Sarah's Sweet Treats'. You can view it at https://sarahs-sweet-treats.fingertip.com"
 
 ## Requirements
