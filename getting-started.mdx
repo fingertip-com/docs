@@ -10,7 +10,7 @@ The Fingertip API is built on **REST** principles and enforces **HTTPS** for all
 All requests should be made to the following base URL:
 
 ```
-https://ap1-production-creator-api.fingertip.com
+https://api.fingertip.com
 ```
 
 ## Authentication
@@ -47,7 +47,7 @@ You can verify your API connectivity with a simple ping request:
 
 ```bash
 curl --request GET \
-     --url https://ap1-production-creator-api.fingertip.com/api/v1/ping \
+     --url https://api.fingertip.com/v1/ping \
      --header 'accept: application/json' \
      --header 'authorization: Bearer YOUR_API_KEY'
 ```
