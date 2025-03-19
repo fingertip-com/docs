@@ -1,0 +1,97 @@
+---
+title: "MCP Quickstart"
+description: "Enabling AI assistants to manage your Fingertip sites"
+---
+
+## What is MCP?
+
+Model Context Protocol (MCP) is a way for AI assistants to access tools outside their normal capabilities. With Fingertip's MCP implementation, AI assistants can:
+
+- See all your Fingertip sites
+- Get details about specific sites
+- Create new sites
+
+Think of it as giving the AI a set of commands to work with your Fingertip account.
+
+## Installation
+
+Install globally:
+
+```bash
+npm install -g @fingertip/mcp
+```
+
+Or use Smithery for automatic setup with Claude:
+
+```bash
+npx -y @smithery/cli install @fingertip-com/fingertip-mcp --client claude
+```
+
+## Quick Start
+
+1. Set your API key:
+
+```bash
+export FINGERTIP_API_KEY=your_api_key_here
+```
+
+2. Start the MCP server:
+
+```bash
+fingertip-mcp
+```
+
+That's it! Now when you chat with an AI assistant, it can access your Fingertip sites.
+
+## Available Tools
+
+### get-sites
+
+Lists your Fingertip sites.
+
+```json
+{
+  "pageSize": 10, // optional
+  "cursor": "abc123" // optional, for pagination
+}
+```
+
+### get-site
+
+Gets details about one site.
+
+```json
+{
+  "siteId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+### create-site
+
+Makes a new site.
+
+```json
+{
+  "name": "My Coffee Shop",
+  "slug": "my-coffee-shop",
+  "businessType": "cafe",
+  "description": "Specialty coffee in Portland" // optional
+}
+```
+
+## Example Conversation
+
+You: "Can you create a new bakery website for me?"
+
+AI: "I'd be happy to help create a bakery website. What would you like to name it?"
+
+You: "Sarah's Sweet Treats"
+
+AI: _uses MCP to create a new Fingertip site_
+
+AI: "Great! I've created a new site called 'Sarah's Sweet Treats'. You can view it at https://sarahs-sweet-treats.fingertip.com"
+
+## Requirements
+
+- Node.js 16+
+- Fingertip API key
