@@ -160,5 +160,10 @@
       "github": "https://github.com/fingertip-com",
       "linkedin": "https://linkedin.com/company/fingertip-com"
     }
+  },
+  "integrations": {
+    "gtm": {
+      "tagId": "GTM-PWKVQTZ6"
+    }
   }
 }
