@@ -27,6 +27,9 @@
       "source": "https://fingertip.com/fonts/Glide-Variable.woff2"
     }
   },
+  "icons": {
+    "library": "lucide"
+  },
   "background": {
     "decoration": "gradient"
   },
@@ -50,50 +53,13 @@
         "group": "API reference",
         "pages": [
           {
-            "group": "General",
-            "pages": ["openapi-specs/health-check-endpoint"]
-          },
-          {
-            "group": "Workspaces",
-            "pages": [
-              "openapi-specs/list-workspaces",
-              "openapi-specs/get-workspace-by-id",
-              "openapi-specs/update-workspace",
-              "openapi-specs/list-workspace-memberships",
-              "openapi-specs/get-workspace-membership",
-              "openapi-specs/create-workspace-membership",
-              "openapi-specs/update-workspace-membership",
-              "openapi-specs/delete-workspace-membership",
-              "openapi-specs/list-workspace-invitations",
-              "openapi-specs/get-workspace-invitation-details",
-              "openapi-specs/create-workspace-invitation",
-              "openapi-specs/delete-workspace-invitation"
-            ]
-          },
-          {
             "group": "Sites",
             "pages": [
               "openapi-specs/list-sites",
               "openapi-specs/get-site-by-id",
               "openapi-specs/create-a-new-site",
               "openapi-specs/update-site",
-              "openapi-specs/delete-site",
-              "openapi-specs/list-site-memberships",
-              "openapi-specs/get-a-site-membership",
-              "openapi-specs/create-site-membership",
-              "openapi-specs/update-site-membership",
-              "openapi-specs/delete-site-membership",
-              "openapi-specs/list-site-invitations",
-              "openapi-specs/get-site-invitation-details",
-              "openapi-specs/create-site-invitation",
-              "openapi-specs/delete-site-invitation"
-            ]
-          },
-          {
-            "group": "Site contacts",
-            "pages": [
-              "openapi-specs/get-sample-site-contacts",
-              "openapi-specs/create-a-site-contact"
+              "openapi-specs/delete-site"
             ]
           },
           {
@@ -103,7 +69,12 @@
               "openapi-specs/get-a-single-page",
               "openapi-specs/create-a-new-page",
               "openapi-specs/update-a-page",
-              "openapi-specs/delete-a-page",
+              "openapi-specs/delete-a-page"
+            ]
+          },
+          {
+            "group": "Page themes",
+            "pages": [
               "openapi-specs/get-page-theme",
               "openapi-specs/update-page-theme"
             ]
@@ -119,18 +90,57 @@
             ]
           },
           {
-            "group": "Forms",
-            "pages": ["openapi-specs/get-sample-form-responses"]
+            "group": "Site contacts",
+            "pages": ["openapi-specs/create-a-site-contact"]
+          },
+          {
+            "group": "Workspaces",
+            "pages": [
+              "openapi-specs/list-workspaces",
+              "openapi-specs/get-workspace-by-id",
+              "openapi-specs/update-workspace"
+            ]
           },
           {
             "group": "Bookings",
             "pages": ["openapi-specs/get-bookings-for-a-site"]
           },
           {
-            "group": "Integrations",
+            "group": "Site memberships",
             "pages": [
-              "openapi-specs/create-zapier-webhook-subscription",
-              "openapi-specs/delete-zapier-webhook-subscription"
+              "openapi-specs/list-site-memberships",
+              "openapi-specs/get-a-site-membership",
+              "openapi-specs/create-site-membership",
+              "openapi-specs/update-site-membership",
+              "openapi-specs/delete-site-membership"
+            ]
+          },
+          {
+            "group": "Site invitations",
+            "pages": [
+              "openapi-specs/list-site-invitations",
+              "openapi-specs/get-site-invitation-details",
+              "openapi-specs/create-site-invitation",
+              "openapi-specs/delete-site-invitation"
+            ]
+          },
+          {
+            "group": "Workspaces memberships",
+            "pages": [
+              "openapi-specs/list-workspace-memberships",
+              "openapi-specs/get-workspace-membership",
+              "openapi-specs/create-workspace-membership",
+              "openapi-specs/update-workspace-membership",
+              "openapi-specs/delete-workspace-membership"
+            ]
+          },
+          {
+            "group": "Workspaces invitations",
+            "pages": [
+              "openapi-specs/list-workspace-invitations",
+              "openapi-specs/get-workspace-invitation-details",
+              "openapi-specs/create-workspace-invitation",
+              "openapi-specs/delete-workspace-invitation"
             ]
           }
         ]
