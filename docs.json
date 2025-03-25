@@ -154,14 +154,14 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:hello@fingertip.com"
+        "label": "Log in",
+        "href": "https://fingertip.com/sign-in"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://fingertip.com"
+      "label": "Sign up",
+      "href": "https://fingertip.com/sign-up"
     }
   },
   "footer": {
