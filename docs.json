@@ -14,9 +14,18 @@
   },
   "favicon": "/favicon.svg",
   "fonts": {
-    "family": "Glide",
-    "format": "woff2",
-    "source": "https://fingertip.com/fonts/Glide-Variable.woff2"
+    "heading": {
+      "family": "Glide",
+      "format": "woff2",
+      "weight": 700,
+      "source": "https://fingertip.com/fonts/Glide-Variable.woff2"
+    },
+    "body": {
+      "family": "Glide",
+      "format": "woff2",
+      "weight": 400,
+      "source": "https://fingertip.com/fonts/Glide-Variable.woff2"
+    }
   },
   "background": {
     "decoration": "gradient"
