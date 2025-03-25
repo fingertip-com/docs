@@ -8,7 +8,19 @@
     "light": "#F85628",
     "dark": "#F85628"
   },
+  "styling": {
+    "codeblocks": "system",
+    "eyebrows": "section"
+  },
   "favicon": "/favicon.svg",
+  "fonts": {
+    "family": "Glide",
+    "format": "woff2",
+    "source": "https://fingertip.com/fonts/Glide-Variable.woff2"
+  },
+  "background": {
+    "decoration": "gradient"
+  },
   "navigation": {
     "groups": [
       {
