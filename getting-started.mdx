@@ -1,80 +1,50 @@
 ---
-title: Getting started
-description: "Understand general concepts, response codes, and authentication strategies."
+title: "Getting Started"
+description: "Learn the basics of Fingertip and get up and running quickly"
 ---
 
-## Base URL
+## What is Fingertip?
 
-The Fingertip API is built on **REST** principles and enforces **HTTPS** for all requests to ensure data security, integrity, and privacy. The API does not support **HTTP**.
+Fingertip is a platform that helps you build, manage, and automate websites. Whether you're creating a personal site or business page. Fingertip provides powerful tools to streamline your workflow.
 
-All requests should be made to the following base URL:
+## Choose your integration method
 
-```
-https://api.fingertip.com
-```
+Fingertip offers multiple ways to integrate with our platform. Choose the method that best fits your technical skills and requirements:
 
-## Authentication
+<CardGroup cols={2}>
+  <Card title="REST API" icon="code" href="/rest-api">
+    Ideal for custom implementations in any language
+  </Card>
+  <Card title="Node.js SDK" icon="js" href="/node-sdk">
+    Official JavaScript library for quick integration with Node.js applications
+  </Card>
+  <Card title="Model Context Protocol (MCP)" icon="robot" href="/mcp">
+    Enable AI assistants like Claude and Cursor to manage your Fingertip sites
+  </Card>
+  <Card title="Zapier integration" icon="bolt" href="/zapier-integration">
+    No-code solution to connect Fingertip with 8,000+ apps without writing code
+  </Card>
+  <Card title="Raycast extension" icon="command" href="/raycast-extension">
+    Manage your Fingertip websites directly from the Raycast launcher
+  </Card>
+</CardGroup>
 
-To authenticate with the Fingertip API, add an `Authorization` header to your requests. Your API key should be included directly in the header value. You can obtain an API key from [https://fingertip.com/account/api](https://fingertip.com/account/api).
+## Getting Your API Key
 
-```
-Authorization: Bearer YOUR_API_KEY
-```
+Get your API key from [fingertip.com/account/api](https://fingertip.com/account/api). Log in, generate a key, and use it during setup. Keep it secure.
 
-## Response Codes
+## Next Steps
 
-Fingertip uses standard HTTP status codes to indicate the success or failure of API requests:
+After choosing your integration method and obtaining your API key:
 
-| Status | Description                                                      |
-| ------ | ---------------------------------------------------------------- |
-| `200`  | Successful request                                               |
-| `400`  | Bad request - check that the parameters were correct             |
-| `401`  | Unauthorized - API key is missing or invalid                     |
-| `403`  | Forbidden - insufficient permissions for the requested operation |
-| `404`  | Not found - the requested resource doesn't exist                 |
-| `429`  | Too many requests - rate limit exceeded                          |
-| `5xx`  | Server error - indicates a problem with Fingertip servers        |
+1. Follow the quickstart guide for your chosen method
+2. Set up your first site or connect to your existing sites
+3. Test your integration using the examples provided in the documentation
 
-## Rate Limits
+## Need help?
 
-Fingertip API implements rate limiting to ensure service stability. If you exceed the rate limit, you'll receive a `429` response error code. Contact support if you need increased limits for your use case.
+If you have any questions or need assistance, don't hesitate to:
 
-## Endpoints
+- Email us at [hello@fingertip.com](mailto:hello@fingertip.com)
 
-### Health Check
-
-You can verify your API connectivity with a simple ping request:
-
-```bash
-curl --request GET \
-     --url https://api.fingertip.com/v1/ping \
-     --header 'accept: application/json' \
-     --header 'authorization: Bearer YOUR_API_KEY'
-```
-
-A successful response indicates that your API key is valid and the service is available.
-
-## FAQ
-
-<AccordionGroup>
-  <Accordion title="What data formats does the API support?">
-    The API primarily accepts and returns data in JSON format.
-  </Accordion>
-
-<Accordion title="How should I handle errors?">
-  Always check the HTTP status code and response body for error details. The
-  response will typically include an error message explaining what went wrong.
-</Accordion>
-
-<Accordion title="Are there any usage limitations?">
-  In addition to rate limits, certain operations may have quotas or restrictions
-  based on your account plan. Refer to the specific endpoint documentation for
-  details.
-</Accordion>
-
-  <Accordion title="How can I get help if I encounter issues?">
-    For technical assistance, contact Fingertip support and include details about
-    the specific API call that's causing problems, along with any error messages
-    received.
-  </Accordion>
-</AccordionGroup>
+We're excited to see what you'll build with Fingertip!

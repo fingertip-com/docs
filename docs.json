@@ -1,7 +1,8 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Fingertip",
+  "name": "Fingertip documentation",
+  "description": "Official documentation for the Fingertip platform API and integrations",
   "colors": {
     "primary": "#F85628",
     "light": "#F85628",
@@ -11,17 +12,21 @@
   "navigation": {
     "groups": [
       {
-        "group": "Using the API",
+        "group": "Introduction",
+        "pages": ["getting-started"]
+      },
+      {
+        "group": "Quickstart guides",
         "pages": [
-          "getting-started",
-          "node-quickstart",
-          "mcp-quickstart",
-          "zapier-quickstart",
-          "raycast-quickstart"
+          "rest-api",
+          "node-sdk",
+          "mcp",
+          "zapier-integration",
+          "raycast-extension"
         ]
       },
       {
-        "group": "API Reference",
+        "group": "API reference",
         "pages": [
           {
             "group": "General",
