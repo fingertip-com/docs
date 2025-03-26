@@ -152,16 +152,10 @@
     "dark": "/logo/dark.svg"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Log in",
-        "href": "https://fingertip.com/sign-in"
-      }
-    ],
     "primary": {
       "type": "button",
-      "label": "Sign up",
-      "href": "https://fingertip.com/sign-up"
+      "label": "Visit homepage",
+      "href": "https://fingertip.com"
     }
   },
   "footer": {
