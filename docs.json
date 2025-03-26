@@ -12,7 +12,7 @@
     "codeblocks": "system",
     "eyebrows": "section"
   },
-  "favicon": "/favicon.png",
+  "favicon": "/favicon.svg",
   "fonts": {
     "heading": {
       "family": "Glide",
