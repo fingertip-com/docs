@@ -5,96 +5,70 @@ description: "Enabling AI assistants to manage your Fingertip sites"
 
 ## What is MCP?
 
-Model Context Protocol (MCP) is a way for AI assistants to access tools outside their normal capabilities. With Fingertip's MCP implementation, AI assistants can:
+Model Context Protocol (MCP) enables AI assistants to interact with your Fingertip sites. Through this integration, AI assistants can view, manage, and create sites within your Fingertip account.
 
-- See all your Fingertip sites
-- Get details about specific sites
-- Create new sites
-
-Think of it as giving the AI a set of commands to work with your Fingertip account.
-
-## Getting Your API Key
+## Getting your API key
 
 Get your API key from [fingertip.com/account/api](https://fingertip.com/account/api). Log in, generate a key, and use it during setup. Keep it secure.
 
-## Setting up with AI assistants
+## Claude Desktop Integration
 
-### Claude Desktop
+### Setup Instructions
 
-To use Fingertip MCP with Claude Desktop:
-
-1. **Install Claude Desktop** if you haven't already (available for macOS and Windows)
-2. **Install Fingertip MCP** with Smithery:
-
-   ```bash
-   npx -y @smithery/cli@latest install @fingertip-com/fingertip-mcp --client claude
-   ```
-
-3. **Open Claude Desktop** and you'll see "Fingertip" in the available tools section
-4. **Verify it's working** by asking Claude "What Fingertip sites do I have?"
-5. **Troubleshooting**:
-   - Make sure the MCP server is running when using Claude
-   - Restart Claude Desktop if tools aren't appearing
-   - Check your API key is correct
-
-### Cursor
-
-To use Fingertip MCP with Cursor:
-
-1. **Install Cursor** if you haven't already
-2. **Install Fingertip MCP** with Smithery:
-   ```bash
-   npx -y @smithery/cli@latest install @fingertip-com/fingertip-mcp --client cursor
-   ```
-3. **Open Cursor** and the Fingertip tools will be available
-4. **Verify it's working** by asking Cursor about your Fingertip sites
-5. **Troubleshooting**:
-   - Ensure the MCP server is running when using Cursor
-   - Restart Cursor if tools don't appear
-   - Verify your API key is correctly configured
-
-### Direct Configuration with npx
-
-You can also manually set up Fingertip MCP by configuring your AI assistant's tools JSON directly:
-
-1. Add the following configuration to your assistant's tools configuration file:
+1. Ensure Claude Desktop is installed on your system (macOS/Windows)
+2. Edit your Claude Desktop configuration file:
+   - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+3. Add the Fingertip MCP server configuration:
    ```json
    {
-     "fingertip-mcp": {
-       "command": "npx",
-       "args": ["-y", "@fingertip/mcp"],
-       "env": {
-         "FINGERTIP_API_KEY": "YOUR_API_KEY_HERE"
+     "mcpServers": {
+       "fingertip_api": {
+         "command": "npx",
+         "args": ["-y", "fingertip-mcp"],
+         "env": {
+           "FINGERTIP_API_KEY": "Your_API_Key_Here"
+         }
        }
      }
    }
    ```
-2. Replace `YOUR_API_KEY_HERE` with your actual Fingertip API key
-3. Restart your AI assistant for changes to take effect
+4. Restart Claude Desktop
+5. Verify by asking Claude: "What Fingertip sites do I have?"
 
-## Setup
+### Troubleshooting
 
-Run the command above and follow the instructions in the [CLI](https://mintlify.com/docs/advanced/mcp/quickstart).
-
-If you run into any issues, please don't hesitate to contact [support](mailto:hello@fingertip.com).
+- Ensure the MCP server is running when using Claude
+- Restart Claude Desktop if tools aren't appearing
+- Verify your API key is correct
 
 ## Available Tools
 
-- get-sites: Get a list of sites
-- get-site: Get a specific site by ID
-- create-site: Create a new site
-- get-page: Get a specific page by ID
-- update-page: Update a specific page
-- get-page-blocks: Get all blocks for a specific page
-- get-page-theme: Get the theme for a specific page
-- update-page-theme: Update the theme for a specific page
-- update-block: Update a specific block
+The integration provides access to the following functionality:
+
+| Tool              | Description                       |
+| ----------------- | --------------------------------- |
+| get-sites         | Retrieve all your Fingertip sites |
+| get-site          | Get details about a specific site |
+| create-site       | Create a new Fingertip site       |
+| get-page          | Retrieve a specific page          |
+| update-page       | Modify page content               |
+| get-page-blocks   | Retrieve all blocks for a page    |
+| get-page-theme    | Get theme settings for a page     |
+| update-page-theme | Modify theme settings             |
+| update-block      | Update a specific content block   |
 
 ## Requirements
 
-- Node.js 16+
-- Fingertip API key
+- Node.js 16 or higher
+- Valid Fingertip API key
 
-## Repository
+## Technical Details
 
-For more information, bug reports, or to contribute, visit the [GitHub repository](https://github.com/fingertip-com/fingertip-mcp).
+The Fingertip MCP Server is built with TypeScript and generated using [Stainless](https://www.stainless.com/).
+
+For developer documentation, bug reports, or contributions, visit the [GitHub repository](https://github.com/fingertip-com/fingertip-typescript/tree/main/packages/mcp-server).
+
+## Support
+
+If you encounter any issues or need assistance, contact [support@fingertip.com](mailto:hello@fingertip.com).
