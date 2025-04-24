@@ -46,7 +46,8 @@
           "node-sdk",
           "mcp",
           "zapier-integration",
-          "raycast-extension"
+          "raycast-extension",
+          "webhooks"
         ]
       },
       {
