@@ -25,6 +25,13 @@ Ready to start? [Set up your first webhook](https://fingertip.com/webhooks)
 2. Your server recreates and compares this signature
 3. If they match, the webhook is legitimate
 
+| Parameter | Value                 |
+| --------- | --------------------- |
+| Method    | HMAC                  |
+| Algorithm | SHA-256               |
+| Encoding  | Hex                   |
+| Header    | `x-webhook-signature` |
+
 ## Example implementation
 
 ```js
@@ -68,9 +75,33 @@ app.listen(PORT, () => {
 });
 ```
 
-## Supported events
+## Payload format
 
-| Event                   | Description          |
+Here's an example webhook payload:
+
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "created": 1745495130,
+  "type": "site_contact.created",
+  "data": {
+    "id": "2f7e3feb-e155-486d-a84a-8809b42e9c24",
+    "siteId": "646118e1-7e59-420c-b1ba-0a08be60401e"
+    // Additional event data...
+  }
+}
+```
+
+Every webhook includes:
+
+- **id**: UUID v4 identifier for the event
+- **created**: Unix timestamp in seconds
+- **type**: Event type (see Supported events)
+- **data**: Event-specific information
+
+## Supported event types
+
+| Type                    | Description          |
 | ----------------------- | -------------------- |
 | `booking.created`       | New booking created  |
 | `booking.rescheduled`   | Booking time changed |
@@ -85,3 +116,5 @@ app.listen(PORT, () => {
 - Process webhook data asynchronously
 - Always verify webhook signatures
 - Implement idempotency to handle duplicate events
+- Store the webhook ID to prevent processing duplicates
+- Keep your webhook endpoint URL and signing secret secure
