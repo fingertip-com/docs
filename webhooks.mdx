@@ -15,6 +15,16 @@ Webhooks push notifications to your application when events occur in Fingertip, 
 
 Ready to start? [Set up your first webhook](https://fingertip.com/webhooks)
 
+## Verifying webhook signatures
+
+**Why verify?** To ensure requests are actually from Fingertip and haven't been tampered with.
+
+**How it works:**
+
+1. Fingertip signs each webhook with your secret
+2. Your server recreates and compares this signature
+3. If they match, the webhook is legitimate
+
 ## Example implementation
 
 ```js
