@@ -89,9 +89,9 @@
             "pages": [
               "openapi-specs/list-blocks",
               "openapi-specs/get-block",
-              "openapi-specs/create-a-new-block",
-              "openapi-specs/update-a-block",
-              "openapi-specs/delete-a-block"
+              "openapi-specs/create-block",
+              "openapi-specs/update-block",
+              "openapi-specs/delete-block"
             ]
           },
           {
