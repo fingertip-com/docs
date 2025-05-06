@@ -147,6 +147,14 @@
               "openapi-specs/create-workspace-invitation",
               "openapi-specs/delete-workspace-invitation"
             ]
+          },
+          {
+            "group": "Webhooks",
+            "pages": [
+              "openapi-specs/list-webhooks",
+              "openapi-specs/create-webhook",
+              "openapi-specs/delete-webhook"
+            ]
           }
         ]
       }
