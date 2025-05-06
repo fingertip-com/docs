@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
+  "theme": "maple",
   "name": "Fingertip documentation",
   "description": "Official documentation for the Fingertip platform API and integrations",
   "colors": {
@@ -15,13 +15,13 @@
   "favicon": "/favicon.svg",
   "fonts": {
     "heading": {
-      "family": "Glide",
+      "family": "Glide, sans-serif",
       "format": "woff2",
       "weight": 700,
       "source": "https://fingertip.com/fonts/Glide-Variable.woff2"
     },
     "body": {
-      "family": "Glide",
+      "family": "Glide, sans-serif",
       "format": "woff2",
       "weight": 400,
       "source": "https://fingertip.com/fonts/Glide-Variable.woff2"
@@ -61,8 +61,8 @@
             "group": "Sites",
             "pages": [
               "openapi-specs/list-sites",
-              "openapi-specs/get-site-by-id",
-              "openapi-specs/create-a-new-site",
+              "openapi-specs/get-site",
+              "openapi-specs/create-site",
               "openapi-specs/update-site",
               "openapi-specs/delete-site"
             ]
@@ -70,11 +70,11 @@
           {
             "group": "Pages",
             "pages": [
-              "openapi-specs/get-pages-for-a-site",
-              "openapi-specs/get-a-single-page",
-              "openapi-specs/create-a-new-page",
-              "openapi-specs/update-a-page",
-              "openapi-specs/delete-a-page"
+              "openapi-specs/list-pages",
+              "openapi-specs/get-page",
+              "openapi-specs/create-page",
+              "openapi-specs/update-page",
+              "openapi-specs/delete-page"
             ]
           },
           {
@@ -87,8 +87,8 @@
           {
             "group": "Blocks",
             "pages": [
-              "openapi-specs/get-all-blocks-for-a-page",
-              "openapi-specs/get-a-single-block",
+              "openapi-specs/list-blocks",
+              "openapi-specs/get-block",
               "openapi-specs/create-a-new-block",
               "openapi-specs/update-a-block",
               "openapi-specs/delete-a-block"
@@ -96,25 +96,25 @@
           },
           {
             "group": "Site contacts",
-            "pages": ["openapi-specs/create-a-site-contact"]
+            "pages": ["openapi-specs/create-site-contact"]
           },
           {
             "group": "Workspaces",
             "pages": [
               "openapi-specs/list-workspaces",
-              "openapi-specs/get-workspace-by-id",
+              "openapi-specs/get-workspace",
               "openapi-specs/update-workspace"
             ]
           },
           {
             "group": "Bookings",
-            "pages": ["openapi-specs/get-bookings-for-a-site"]
+            "pages": ["openapi-specs/list-bookings"]
           },
           {
             "group": "Site memberships",
             "pages": [
               "openapi-specs/list-site-memberships",
-              "openapi-specs/get-a-site-membership",
+              "openapi-specs/get-site-membership",
               "openapi-specs/create-site-membership",
               "openapi-specs/update-site-membership",
               "openapi-specs/delete-site-membership"
@@ -124,7 +124,7 @@
             "group": "Site invitations",
             "pages": [
               "openapi-specs/list-site-invitations",
-              "openapi-specs/get-site-invitation-details",
+              "openapi-specs/get-site-invitation",
               "openapi-specs/create-site-invitation",
               "openapi-specs/delete-site-invitation"
             ]
@@ -143,7 +143,7 @@
             "group": "Workspaces invitations",
             "pages": [
               "openapi-specs/list-workspace-invitations",
-              "openapi-specs/get-workspace-invitation-details",
+              "openapi-specs/get-workspace-invitation",
               "openapi-specs/create-workspace-invitation",
               "openapi-specs/delete-workspace-invitation"
             ]
@@ -152,7 +152,9 @@
             "group": "Webhooks",
             "pages": [
               "openapi-specs/list-webhooks",
+              "openapi-specs/get-webhook",
               "openapi-specs/create-webhook",
+              "openapi-specs/update-webhook",
               "openapi-specs/delete-webhook"
             ]
           }
