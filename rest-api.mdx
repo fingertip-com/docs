@@ -21,7 +21,7 @@ To authenticate with the Fingertip API, add an `Authorization` header to your re
 Authorization: Bearer YOUR_API_KEY
 ```
 
-## Response Codes
+## Response codes
 
 Fingertip uses standard HTTP status codes to indicate the success or failure of API requests:
 
@@ -35,13 +35,13 @@ Fingertip uses standard HTTP status codes to indicate the success or failure of 
 | `429`  | Too many requests - rate limit exceeded                          |
 | `5xx`  | Server error - indicates a problem with Fingertip servers        |
 
-## Rate Limits
+## Rate limits
 
 Fingertip API implements rate limiting to ensure service stability. If you exceed the rate limit, you'll receive a `429` response error code. Contact support if you need increased limits for your use case.
 
 ## Endpoints
 
-### Health Check
+### Health check
 
 You can verify your API connectivity with a simple ping request:
 
@@ -54,7 +54,7 @@ curl --request GET \
 
 A successful response indicates that your API key is valid and the service is available.
 
-## FAQ
+## FAQs
 
 <AccordionGroup>
   <Accordion title="What data formats does the API support?">
