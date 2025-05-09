@@ -11,15 +11,15 @@ Model Context Protocol (MCP) enables AI assistants to interact with your Fingert
 
 Get your API key from [fingertip.com/api-keys](https://fingertip.com/api-keys). Log in, generate a key, and use it during setup. Keep it secure.
 
-## Claude Desktop integration
+### Setup Instructions
 
-### Setup instructions
+#### Option 1: Local MCP Server
 
-1. Ensure Claude Desktop is installed on your system (macOS/Windows)
-2. Edit your Claude Desktop configuration file:
-   - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-   - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
-3. Add the Fingertip MCP server configuration:
+1. Install your preferred MCP-compatible client (Claude Desktop, OpenAI, Cursor, Windsurf, Zed etc.)
+2. Locate your client's configuration file or settings area
+   - Many clients use JSON configuration files in user directories
+   - Refer to your specific client's documentation for exact locations
+3. Add the Fingertip MCP server configuration (example for JSON-based clients):
    ```json
    {
      "mcpServers": {
@@ -33,42 +33,56 @@ Get your API key from [fingertip.com/api-keys](https://fingertip.com/api-keys). 
      }
    }
    ```
-4. Restart Claude Desktop
-5. Verify by asking Claude: "What Fingertip sites do I have?"
+4. Restart your client application
+5. Verify the connection by asking about your Fingertip sites
+
+#### Option 2: Remote MCP Server
+
+If you prefer not to run a local MCP server, you can use our remote MCP server:
+
+1. Configure your MCP client to connect to the remote server (example for JSON-based clients):
+   ```json
+   {
+     "mcpServers": {
+       "fingertip_api": {
+         "command": "npx",
+         "args": ["mcp-remote", "https://mcp.fingertip.com/sse"]
+       }
+     }
+   }
+   ```
+2. Restart your client application
+3. When using your client, you'll be prompted to authenticate in a browser window
+4. After authentication, the Fingertip tools will be available to your AI assistant
+5. Verify the connection by asking about your Fingertip sites
 
 ### Troubleshooting
 
-- Ensure the MCP server is running when using Claude
+- If using the remote server option, make sure you've completed the authentication in the browser
+- For remote connections, you can test the connection directly with: `npx mcp-remote https://mcp.fingertip.com/sse`
+- If authentication issues persist, try clearing cached credentials with: `rm -rf ~/.mcp-auth`
 - Restart Claude Desktop if tools aren't appearing
-- Verify your API key is correct
+- Verify your API key is correct (for local server option)
 
 ## Available tools
 
 The integration provides access to the following functionality:
 
-| Tool              | Description                       |
-| ----------------- | --------------------------------- |
-| get-sites         | Retrieve all your Fingertip sites |
-| get-site          | Get details about a specific site |
-| create-site       | Create a new Fingertip site       |
-| get-page          | Retrieve a specific page          |
-| update-page       | Modify page content               |
-| get-page-blocks   | Retrieve all blocks for a page    |
-| get-page-theme    | Get theme settings for a page     |
-| update-page-theme | Modify theme settings             |
-| update-block      | Update a specific content block   |
+| Category   | Available operations                                   |
+| ---------- | ------------------------------------------------------ |
+| Sites      | Create, retrieve, update, list, delete sites           |
+| Pages      | Retrieve, update, delete pages; List/create site pages |
+| Blocks     | Create, retrieve, update, delete, list blocks          |
+| Themes     | Retrieve and update page themes                        |
+| Workspaces | Retrieve, update, list workspaces                      |
+| Members    | Manage site/workspace memberships and invitations      |
+| Forms      | Sample form responses                                  |
+| Bookings   | List and sample bookings                               |
+| Contacts   | Create and sample site contacts                        |
+| Orders     | Sample workspace orders                                |
+| Webhooks   | Create, retrieve, update, list, delete webhooks        |
 
 ## Requirements
 
 - Node.js 16 or higher
 - Valid Fingertip API key
-
-## Technical details
-
-The Fingertip MCP Server is built with TypeScript and generated using [Stainless](https://www.stainless.com/).
-
-For developer documentation, bug reports, or contributions, visit the [GitHub repository](https://github.com/fingertip-com/fingertip-typescript/tree/main/packages/mcp-server).
-
-## Support
-
-If you encounter any issues or need assistance, contact [support@fingertip.com](mailto:hello@fingertip.com).
