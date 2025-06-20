@@ -65,7 +65,8 @@
               "openapi-specs/get-site",
               "openapi-specs/create-site",
               "openapi-specs/update-site",
-              "openapi-specs/delete-site"
+              "openapi-specs/delete-site",
+              "openapi-specs/get-comprehensive-site-analytics"
             ]
           },
           {
@@ -97,7 +98,10 @@
           },
           {
             "group": "Site contacts",
-            "pages": ["openapi-specs/create-site-contact"]
+            "pages": [
+              "openapi-specs/list-site-contacts",
+              "openapi-specs/create-site-contact"
+            ]
           },
           {
             "group": "Workspaces",
@@ -110,6 +114,36 @@
           {
             "group": "Bookings",
             "pages": ["openapi-specs/list-bookings"]
+          },
+          {
+            "group": "Event types",
+            "pages": [
+              "openapi-specs/list-event-types",
+              "openapi-specs/get-event-type"
+            ]
+          },
+          {
+            "group": "Blog posts",
+            "pages": [
+              "openapi-specs/list-blog-posts",
+              "openapi-specs/get-blog-post"
+            ]
+          },
+          {
+            "group": "Forms",
+            "pages": [
+              "openapi-specs/list-form-responses",
+              "openapi-specs/list-form-templates",
+              "openapi-specs/get-form-template"
+            ]
+          },
+          {
+            "group": "Invoices",
+            "pages": ["openapi-specs/list-invoices"]
+          },
+          {
+            "group": "Orders",
+            "pages": ["openapi-specs/list-orders"]
           },
           {
             "group": "Site memberships",
