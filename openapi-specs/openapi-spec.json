@@ -5878,7 +5878,6 @@ paths:
               required:
                 - email
                 - siteId
-                - marketingStatus
               description: Data for creating a new site contact
       responses:
         '200':
@@ -6093,11 +6092,7 @@ paths:
               apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
             });
 
-            const siteContact = await client.siteContacts.create({
-              email: 'email',
-              marketingStatus: 'SUBSCRIBED',
-              siteId: 'siteId',
-            });
+            const siteContact = await client.siteContacts.create({ email: 'email', siteId: 'siteId' });
 
             console.log(siteContact.siteContact);
   /v1/site-contacts/sample:
@@ -8513,12 +8508,12 @@ paths:
               apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
             });
 
-            const invitation = await client.workspaces.invitations.create('workspaceId', {
+            const workspaceInvitation = await client.workspaceInvitations.create('workspaceId', {
               email: 'dev@stainless.com',
               role: 'OWNER',
             });
 
-            console.log(invitation.success);
+            console.log(workspaceInvitation.success);
     get:
       description: Retrieves a paginated list of invitations for a specific workspace
       summary: List workspace invitations
@@ -8655,10 +8650,10 @@ paths:
             });
 
             // Automatically fetches more pages as needed.
-            for await (const invitationListResponse of client.workspaces.invitations.list(
+            for await (const workspaceInvitationListResponse of client.workspaceInvitations.list(
               '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
             )) {
-              console.log(invitationListResponse.id);
+              console.log(workspaceInvitationListResponse.id);
             }
   /v1/workspace-invitations/{invitationId}:
     get:
@@ -8926,14 +8921,14 @@ paths:
             });
 
 
-            const membership = await
-            client.workspaces.memberships.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+            const workspaceMembership = await
+            client.workspaceMemberships.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
               email: 'dev@stainless.com',
               role: 'OWNER',
             });
 
 
-            console.log(membership.success);
+            console.log(workspaceMembership.success);
     get:
       description: Retrieves a paginated list of members for a specific workspace
       summary: List workspace memberships
@@ -9074,10 +9069,10 @@ paths:
             });
 
             // Automatically fetches more pages as needed.
-            for await (const membershipListResponse of client.workspaces.memberships.list(
+            for await (const workspaceMembershipListResponse of client.workspaceMemberships.list(
               '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
             )) {
-              console.log(membershipListResponse.id);
+              console.log(workspaceMembershipListResponse.id);
             }
   /v1/workspace-memberships/{membershipId}:
     get:
