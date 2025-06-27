@@ -2911,6 +2911,1026 @@ paths:
             })) {
               console.log(invoiceListResponse.id);
             }
+    post:
+      description: Creates a new store invoice
+      summary: Create store invoice
+      tags: []
+      parameters: []
+      operationId: createStoreInvoice
+      requestBody:
+        description: Body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                siteId:
+                  type: string
+                  format: uuid
+                  description: Site ID
+                siteContactId:
+                  type: string
+                  format: uuid
+                  description: Site contact ID
+                status:
+                  type: string
+                  enum:
+                    - DRAFT
+                    - PENDING
+                    - PAID
+                    - VOID
+                    - OVERDUE
+                  description: Invoice status
+                currency:
+                  type: string
+                  description: Currency code
+                dueAt:
+                  type: string
+                  description: Due date (ISO string)
+                businessName:
+                  type: string
+                  description: Business name
+                footer:
+                  type: string
+                  description: Footer text
+                memo:
+                  type: string
+                  description: Memo
+                paymentReference:
+                  type: string
+                  description: Payment reference
+                passThroughPaymentFee:
+                  type: boolean
+                  description: Pass through payment fee
+                invoiceDiscounts:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      discountId:
+                        type: string
+                        format: uuid
+                      valueType:
+                        type: string
+                        enum:
+                          - FIXED
+                          - PERCENT
+                        description: Discount value type
+                      valueFixedInCents:
+                        type: number
+                        description: Fixed discount in cents
+                      valuePercent:
+                        type: number
+                        description: Percentage discount
+                      lineNumber:
+                        type: number
+                        description: Line number
+                    required:
+                      - valueType
+                    description: Schema for a store invoice discount
+                  description: Invoice discounts
+                invoiceItems:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      itemId:
+                        type: string
+                        format: uuid
+                        description: Store item ID
+                      unitPriceInCents:
+                        type: number
+                        description: Unit price in cents
+                      description:
+                        type: string
+                        description: Optional description
+                      quantity:
+                        type: number
+                        description: Quantity
+                      taxRate:
+                        type: number
+                        description: Tax rate
+                      lineNumber:
+                        type: number
+                        description: Line number
+                    required:
+                      - itemId
+                      - unitPriceInCents
+                      - quantity
+                      - taxRate
+                    description: Schema for a store invoice item
+                  description: Invoice items
+              required:
+                - siteId
+                - siteContactId
+                - status
+                - invoiceDiscounts
+                - invoiceItems
+              description: Store invoice creation data
+      responses:
+        '200':
+          description: Successful invoice creation response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  invoiceId:
+                    type: string
+                    format: uuid
+                    description: Created invoice ID
+                required:
+                  - invoiceId
+                description: Successful invoice creation response
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
+  /v1/invoices/{invoiceId}/send:
+    post:
+      description: Sends a draft store invoice
+      summary: Send store invoice
+      tags: []
+      parameters:
+        - name: invoiceId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Invoice ID
+      operationId: sendStoreInvoice
+      requestBody:
+        description: Body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                siteSlug:
+                  type: string
+                  description: Site slug
+              required:
+                - siteSlug
+              description: Send invoice data
+      responses:
+        '200':
+          description: Successful send response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Success status
+                required:
+                  - success
+                description: Successful send response
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
+  /v1/invoices/{invoiceId}/void:
+    post:
+      description: Voids a store invoice
+      summary: Void store invoice
+      tags: []
+      parameters:
+        - name: invoiceId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Invoice ID
+      operationId: voidStoreInvoice
+      requestBody:
+        description: Body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+              description: Empty body
+      responses:
+        '200':
+          description: Successful void response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Success status
+                required:
+                  - success
+                description: Successful void response
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
+  /v1/invoices/{invoiceId}/mark-paid:
+    post:
+      description: Marks a store invoice as paid
+      summary: Mark store invoice as paid
+      tags: []
+      parameters:
+        - name: invoiceId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Invoice ID
+      operationId: markStoreInvoicePaid
+      requestBody:
+        description: Body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                completedAt:
+                  type: string
+                  description: Completion date (ISO string)
+              description: Mark paid data
+      responses:
+        '200':
+          description: Successful mark paid response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Success status
+                required:
+                  - success
+                description: Successful mark paid response
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
+  /v1/invoices/{invoiceId}:
+    delete:
+      description: Deletes a draft store invoice
+      summary: Delete draft store invoice
+      tags: []
+      parameters:
+        - name: invoiceId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Invoice ID
+      operationId: deleteDraftStoreInvoice
+      responses:
+        '200':
+          description: Successful deletion response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Success status
+                required:
+                  - success
+                description: Successful deletion response
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
+    put:
+      description: Updates a store invoice
+      summary: Update store invoice
+      tags: []
+      parameters:
+        - name: invoiceId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Invoice ID
+      operationId: updateStoreInvoice
+      requestBody:
+        description: Body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                siteContactId:
+                  type: string
+                  format: uuid
+                  description: Site contact ID
+                memo:
+                  type: string
+                  description: Memo
+                footer:
+                  type: string
+                  description: Footer
+                notes:
+                  type: string
+                  description: Notes
+                currency:
+                  type: string
+                  description: Currency
+                paymentReference:
+                  type: string
+                  description: Payment reference
+                dueAt:
+                  type: string
+                  description: Due date (ISO string)
+                passThroughPaymentFee:
+                  type: boolean
+                  description: Pass through payment fee
+                invoiceItems:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      itemId:
+                        type: string
+                        format: uuid
+                        description: Store item ID
+                      unitPriceInCents:
+                        type: number
+                        description: Unit price in cents
+                      description:
+                        type: string
+                        description: Optional description
+                      quantity:
+                        type: number
+                        description: Quantity
+                      taxRate:
+                        type: number
+                        description: Tax rate
+                      lineNumber:
+                        type: number
+                        description: Line number
+                    required:
+                      - itemId
+                      - unitPriceInCents
+                      - quantity
+                      - taxRate
+                    description: Schema for a store invoice item
+                  description: Invoice items
+                invoiceDiscounts:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      discountId:
+                        type: string
+                        format: uuid
+                      valueType:
+                        type: string
+                        enum:
+                          - FIXED
+                          - PERCENT
+                        description: Discount value type
+                      valueFixedInCents:
+                        type: number
+                        description: Fixed discount in cents
+                      valuePercent:
+                        type: number
+                        description: Percentage discount
+                      lineNumber:
+                        type: number
+                        description: Line number
+                    required:
+                      - valueType
+                    description: Schema for a store invoice discount
+                  description: Invoice discounts
+              required:
+                - invoiceItems
+                - invoiceDiscounts
+              description: Store invoice update data
+      responses:
+        '200':
+          description: Successful update response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Success status
+                required:
+                  - success
+                description: Successful update response
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
+  /v1/invoice-items:
+    get:
+      description: Retrieves a paginated list of invoice items
+      summary: List invoice items
+      tags: []
+      parameters:
+        - name: siteId
+          in: query
+          description: Site ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: cursor
+          in: query
+          description: Pagination cursor
+          schema:
+            type: string
+        - name: pageSize
+          in: query
+          description: 'Number of items per page (default: 10, max: 25)'
+          schema:
+            type: number
+            nullable: true
+        - name: search
+          in: query
+          description: Search term
+          schema:
+            type: string
+      operationId: getInvoiceItems
+      responses:
+        '200':
+          description: Successful invoice items listing response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          description: Unique identifier for the invoice item
+                        title:
+                          type: string
+                          description: Title of the invoice item
+                        description:
+                          type: string
+                          description: Description of the invoice item
+                          nullable: true
+                        priceInCents:
+                          type: number
+                          description: Price in cents
+                        currency:
+                          type: string
+                          description: Currency code
+                        createdAt:
+                          type: string
+                          format: date-time
+                          description: Date and time when the item was created
+                        updatedAt:
+                          type: string
+                          format: date-time
+                          description: Date and time when the item was last updated
+                        siteId:
+                          type: string
+                          format: uuid
+                          description: ID of the site this item belongs to
+                      required:
+                        - id
+                        - title
+                        - description
+                        - priceInCents
+                        - currency
+                        - createdAt
+                        - updatedAt
+                        - siteId
+                      description: Schema for an invoice item
+                    description: Array of invoice items in the current page
+                  total:
+                    type: number
+                    description: Total number of invoice items
+                  pageInfo:
+                    type: object
+                    properties:
+                      hasNextPage:
+                        type: boolean
+                        description: Indicates if there are more pages after the current one
+                      hasPreviousPage:
+                        type: boolean
+                        description: Indicates if there are previous pages before the current one
+                      startCursor:
+                        type: string
+                        description: Cursor pointing to the first item in the current page, if available
+                      endCursor:
+                        type: string
+                        description: Cursor pointing to the last item in the current page, if available
+                    required:
+                      - hasNextPage
+                      - hasPreviousPage
+                    description: Pagination information
+                required:
+                  - items
+                  - total
+                  - pageInfo
+                description: Successful invoice items listing response
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
+    post:
+      description: Creates a new invoice item
+      summary: Create invoice item
+      tags: []
+      parameters: []
+      operationId: createInvoiceItem
+      requestBody:
+        description: Body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                siteId:
+                  type: string
+                  format: uuid
+                  description: Site ID
+                title:
+                  type: string
+                  description: Item title
+                priceInCents:
+                  type: number
+                  description: Price in cents
+                description:
+                  type: string
+                  description: Item description
+              required:
+                - siteId
+                - title
+                - priceInCents
+              description: Invoice item creation data
+      responses:
+        '200':
+          description: Successful invoice item creation response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  item:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier for the invoice item
+                      title:
+                        type: string
+                        description: Title of the invoice item
+                      description:
+                        type: string
+                        description: Description of the invoice item
+                        nullable: true
+                      priceInCents:
+                        type: number
+                        description: Price in cents
+                      currency:
+                        type: string
+                        description: Currency code
+                      createdAt:
+                        type: string
+                        format: date-time
+                        description: Date and time when the item was created
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        description: Date and time when the item was last updated
+                      siteId:
+                        type: string
+                        format: uuid
+                        description: ID of the site this item belongs to
+                    required:
+                      - id
+                      - title
+                      - description
+                      - priceInCents
+                      - currency
+                      - createdAt
+                      - updatedAt
+                      - siteId
+                    description: Created invoice item
+                required:
+                  - item
+                description: Successful invoice item creation response
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
+  /v1/invoice-items/{itemId}:
+    get:
+      description: Retrieves a invoice item by ID
+      summary: Get invoice item
+      tags: []
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Invoice item ID
+      operationId: getInvoiceItem
+      responses:
+        '200':
+          description: Successful invoice item response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  item:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier for the invoice item
+                      title:
+                        type: string
+                        description: Title of the invoice item
+                      description:
+                        type: string
+                        description: Description of the invoice item
+                        nullable: true
+                      priceInCents:
+                        type: number
+                        description: Price in cents
+                      currency:
+                        type: string
+                        description: Currency code
+                      createdAt:
+                        type: string
+                        format: date-time
+                        description: Date and time when the item was created
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        description: Date and time when the item was last updated
+                      siteId:
+                        type: string
+                        format: uuid
+                        description: ID of the site this item belongs to
+                    required:
+                      - id
+                      - title
+                      - description
+                      - priceInCents
+                      - currency
+                      - createdAt
+                      - updatedAt
+                      - siteId
+                    description: Invoice item data
+                required:
+                  - item
+                description: Successful invoice item response
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
+    put:
+      description: Updates a invoice item
+      summary: Update invoice item
+      tags: []
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Invoice item ID
+      operationId: updateInvoiceItem
+      requestBody:
+        description: Body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Item title
+                priceInCents:
+                  type: number
+                  description: Price in cents
+                description:
+                  type: string
+                  description: Item description
+              description: Invoice item update data
+      responses:
+        '200':
+          description: Successful update response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Success status
+                required:
+                  - success
+                description: Successful update response
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
+    delete:
+      description: Deletes a invoice item
+      summary: Delete invoice item
+      tags: []
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Invoice item ID
+      operationId: deleteInvoiceItem
+      responses:
+        '200':
+          description: Successful deletion response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Success status
+                required:
+                  - success
+                description: Successful deletion response
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
   /v1/orders:
     get:
       description: Retrieves orders with basic information
@@ -5465,9 +6485,9 @@ paths:
       summary: List site contacts
       tags: []
       parameters:
-        - name: siteSlug
+        - name: siteId
           in: query
-          description: Site slug to filter contacts
+          description: Site ID to filter contacts
           required: true
           schema:
             type: string
@@ -5831,7 +6851,7 @@ paths:
             });
 
             // Automatically fetches more pages as needed.
-            for await (const siteContactListResponse of client.siteContacts.list({ siteSlug: 'siteSlug' })) {
+            for await (const siteContactListResponse of client.siteContacts.list({ siteId: 'siteId' })) {
               console.log(siteContactListResponse.appointmentsCount);
             }
     post:
