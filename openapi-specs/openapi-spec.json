@@ -2963,6 +2963,7 @@ paths:
                   type: boolean
                   description: Pass through payment fee
                 invoiceDiscounts:
+                  default: []
                   type: array
                   items:
                     type: object
@@ -3000,13 +3001,13 @@ paths:
                       itemId:
                         type: string
                         format: uuid
-                        description: Store item ID
+                        description: Store item ID (optional for custom items)
                       unitPriceInCents:
                         type: number
                         description: Unit price in cents
                       description:
                         type: string
-                        description: Optional description
+                        description: Description of the item
                       quantity:
                         type: number
                         description: Quantity
@@ -3017,8 +3018,8 @@ paths:
                         type: number
                         description: Line number
                     required:
-                      - itemId
                       - unitPriceInCents
+                      - description
                       - quantity
                       - taxRate
                     description: Schema for a store invoice item
@@ -3027,7 +3028,6 @@ paths:
                 - siteId
                 - siteContactId
                 - status
-                - invoiceDiscounts
                 - invoiceItems
               description: Store invoice creation data
       responses:
@@ -3081,10 +3081,7 @@ paths:
             });
 
             const invoice = await client.invoices.create({
-              invoiceDiscounts: [{ valueType: 'FIXED' }],
-              invoiceItems: [
-                { itemId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', quantity: 0, taxRate: 0, unitPriceInCents: 0 },
-              ],
+              invoiceItems: [{ description: 'description', quantity: 0, taxRate: 0, unitPriceInCents: 0 }],
               siteContactId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
               siteId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
               status: 'DRAFT',
@@ -3447,13 +3444,13 @@ paths:
                       itemId:
                         type: string
                         format: uuid
-                        description: Store item ID
+                        description: Store item ID (optional for custom items)
                       unitPriceInCents:
                         type: number
                         description: Unit price in cents
                       description:
                         type: string
-                        description: Optional description
+                        description: Description of the item
                       quantity:
                         type: number
                         description: Quantity
@@ -3464,13 +3461,14 @@ paths:
                         type: number
                         description: Line number
                     required:
-                      - itemId
                       - unitPriceInCents
+                      - description
                       - quantity
                       - taxRate
                     description: Schema for a store invoice item
                   description: Invoice items
                 invoiceDiscounts:
+                  default: []
                   type: array
                   items:
                     type: object
@@ -3499,7 +3497,6 @@ paths:
                   description: Invoice discounts
               required:
                 - invoiceItems
-                - invoiceDiscounts
               description: Store invoice update data
       responses:
         '200':
@@ -3551,10 +3548,7 @@ paths:
             });
 
             const invoice = await client.invoices.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-              invoiceDiscounts: [{ valueType: 'FIXED' }],
-              invoiceItems: [
-                { itemId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', quantity: 0, taxRate: 0, unitPriceInCents: 0 },
-              ],
+              invoiceItems: [{ description: 'description', quantity: 0, taxRate: 0, unitPriceInCents: 0 }],
             });
 
             console.log(invoice.success);
