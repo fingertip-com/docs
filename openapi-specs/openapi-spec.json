@@ -2167,15 +2167,58 @@ paths:
           required: true
           schema:
             type: string
+        - name: cursor
+          in: query
+          description: Pagination cursor
+          schema:
+            type: string
+        - name: pageSize
+          in: query
+          description: 'Number of items per page (default: 10, max: 25)'
+          schema:
+            type: number
+            nullable: true
       operationId: getFormResponses
       responses:
         '200':
-          description: Array of form responses matching the query
+          description: Successful form responses listing response
           content:
             application/json:
               schema:
-                description: Array of form responses matching the query
-                nullable: true
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      nullable: true
+                    description: Array of form responses in the current page
+                  total:
+                    type: number
+                    description: Total number of form responses
+                  pageInfo:
+                    type: object
+                    properties:
+                      hasNextPage:
+                        type: boolean
+                        description: Indicates if there are more pages after the current one
+                      hasPreviousPage:
+                        type: boolean
+                        description: Indicates if there are previous pages before the current one
+                      startCursor:
+                        type: string
+                        description: Cursor pointing to the first item in the current page, if available
+                      endCursor:
+                        type: string
+                        description: Cursor pointing to the last item in the current page, if available
+                    required:
+                      - hasNextPage
+                      - hasPreviousPage
+                    description: Pagination information
+                required:
+                  - items
+                  - total
+                  - pageInfo
+                description: Successful form responses listing response
         '400':
           description: Bad request error response
           content:
@@ -2211,12 +2254,13 @@ paths:
               apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
             });
 
-            const formResponses = await client.formResponses.list({
+            // Automatically fetches more pages as needed.
+            for await (const formResponseListResponse of client.formResponses.list({
               form_template_id: 'form_template_id',
               site_id: 'site_id',
-            });
-
-            console.log(formResponses);
+            })) {
+              console.log(formResponseListResponse);
+            }
   /v1/form-responses/sample:
     get:
       description: Retrieves a sample of form responses for a specific form template.
@@ -2229,15 +2273,58 @@ paths:
           required: true
           schema:
             type: string
+        - name: cursor
+          in: query
+          description: Pagination cursor
+          schema:
+            type: string
+        - name: pageSize
+          in: query
+          description: 'Number of items per page (default: 10, max: 25)'
+          schema:
+            type: number
+            nullable: true
       operationId: getFormResponsesSample
       responses:
         '200':
-          description: Array of form responses matching the query
+          description: Successful form responses listing response
           content:
             application/json:
               schema:
-                description: Array of form responses matching the query
-                nullable: true
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      nullable: true
+                    description: Array of form responses in the current page
+                  total:
+                    type: number
+                    description: Total number of form responses
+                  pageInfo:
+                    type: object
+                    properties:
+                      hasNextPage:
+                        type: boolean
+                        description: Indicates if there are more pages after the current one
+                      hasPreviousPage:
+                        type: boolean
+                        description: Indicates if there are previous pages before the current one
+                      startCursor:
+                        type: string
+                        description: Cursor pointing to the first item in the current page, if available
+                      endCursor:
+                        type: string
+                        description: Cursor pointing to the last item in the current page, if available
+                    required:
+                      - hasNextPage
+                      - hasPreviousPage
+                    description: Pagination information
+                required:
+                  - items
+                  - total
+                  - pageInfo
+                description: Successful form responses listing response
         '400':
           description: Bad request error response
           content:
@@ -2266,20 +2353,19 @@ paths:
                 description: Unauthorized error response
       x-codeSamples:
         - lang: JavaScript
-          source: >-
+          source: |-
             import Fingertip from 'fingertip';
-
 
             const client = new Fingertip({
               apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
             });
 
-
-            const response = await client.formResponses.listSample({ form_template_slug: 'form_template_slug'
-            });
-
-
-            console.log(response);
+            // Automatically fetches more pages as needed.
+            for await (const formResponseListSampleResponse of client.formResponses.listSample({
+              form_template_slug: 'form_template_slug',
+            })) {
+              console.log(formResponseListSampleResponse);
+            }
   /v1/form-templates:
     get:
       description: Retrieves a paginated list of form templates for a specific site
@@ -4093,113 +4179,154 @@ paths:
           required: true
           schema:
             type: string
+        - name: cursor
+          in: query
+          description: Pagination cursor
+          schema:
+            type: string
+        - name: pageSize
+          in: query
+          description: 'Number of items per page (default: 10, max: 25)'
+          schema:
+            type: number
+            nullable: true
       operationId: getOrders
       responses:
         '200':
-          description: Array of order webhook events
+          description: Successful orders listing response
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      format: uuid
-                      description: Webhook event ID
-                    created:
-                      type: number
-                      description: Unix timestamp when event was created
-                    type:
-                      type: string
-                      enum:
-                        - order.created
-                      description: Event type
-                    data:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
                       type: object
                       properties:
                         id:
                           type: string
                           format: uuid
-                          description: Order ID
-                        orderNumber:
+                          description: Webhook event ID
+                        created:
                           type: number
-                          description: Order number
-                        createdAt:
+                          description: Unix timestamp when event was created
+                        type:
                           type: string
-                          description: Order creation date ISO string
-                        status:
-                          type: string
-                          description: Order status
-                        totalInCents:
-                          type: number
-                          description: Total amount in cents
-                        currency:
-                          type: string
-                          description: Currency code
-                        customerName:
-                          type: string
-                          description: Customer full name
-                        customerEmail:
-                          type: string
-                          description: Customer email
-                        orderItems:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              id:
-                                type: string
-                                format: uuid
-                                description: Order item ID
-                              name:
-                                type: string
-                                description: Product name
-                              quantity:
-                                type: number
-                                description: Quantity ordered
-                              priceInCents:
-                                type: number
-                                description: Item price in cents
-                              originalPriceInCents:
-                                type: number
-                                description: Original price in cents
-                              taxInCents:
-                                type: number
-                                description: Tax amount in cents
-                            required:
-                              - id
-                              - name
-                              - quantity
-                              - priceInCents
-                              - originalPriceInCents
-                              - taxInCents
-                            description: Order item details
-                          description: Order items
-                        siteId:
-                          type: string
-                          format: uuid
-                          description: Site ID
+                          enum:
+                            - order.created
+                          description: Event type
+                        data:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                              description: Order ID
+                            orderNumber:
+                              type: number
+                              description: Order number
+                            createdAt:
+                              type: string
+                              description: Order creation date ISO string
+                            status:
+                              type: string
+                              description: Order status
+                            totalInCents:
+                              type: number
+                              description: Total amount in cents
+                            currency:
+                              type: string
+                              description: Currency code
+                            customerName:
+                              type: string
+                              description: Customer full name
+                            customerEmail:
+                              type: string
+                              description: Customer email
+                            orderItems:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                    format: uuid
+                                    description: Order item ID
+                                  name:
+                                    type: string
+                                    description: Product name
+                                  quantity:
+                                    type: number
+                                    description: Quantity ordered
+                                  priceInCents:
+                                    type: number
+                                    description: Item price in cents
+                                  originalPriceInCents:
+                                    type: number
+                                    description: Original price in cents
+                                  taxInCents:
+                                    type: number
+                                    description: Tax amount in cents
+                                required:
+                                  - id
+                                  - name
+                                  - quantity
+                                  - priceInCents
+                                  - originalPriceInCents
+                                  - taxInCents
+                                description: Order item details
+                              description: Order items
+                            siteId:
+                              type: string
+                              format: uuid
+                              description: Site ID
+                          required:
+                            - id
+                            - orderNumber
+                            - createdAt
+                            - status
+                            - totalInCents
+                            - currency
+                            - customerName
+                            - customerEmail
+                            - orderItems
+                            - siteId
+                          description: Order data
                       required:
                         - id
-                        - orderNumber
-                        - createdAt
-                        - status
-                        - totalInCents
-                        - currency
-                        - customerName
-                        - customerEmail
-                        - orderItems
-                        - siteId
-                      description: Order data
-                  required:
-                    - id
-                    - created
-                    - type
-                    - data
-                  description: Order webhook event
-                description: Array of order webhook events
+                        - created
+                        - type
+                        - data
+                      description: Order webhook event
+                    description: Array of order webhook events in the current page
+                  total:
+                    type: number
+                    description: Total number of orders
+                  pageInfo:
+                    type: object
+                    properties:
+                      hasNextPage:
+                        type: boolean
+                        description: Indicates if there are more pages after the current one
+                      hasPreviousPage:
+                        type: boolean
+                        description: Indicates if there are previous pages before the current one
+                      startCursor:
+                        type: string
+                        description: Cursor pointing to the first item in the current page, if available
+                      endCursor:
+                        type: string
+                        description: Cursor pointing to the last item in the current page, if available
+                    required:
+                      - hasNextPage
+                      - hasPreviousPage
+                    description: Pagination information
+                required:
+                  - items
+                  - total
+                  - pageInfo
+                description: Successful orders listing response
         '400':
           description: Bad request error response
           content:
@@ -4235,122 +4362,164 @@ paths:
               apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
             });
 
-            const orders = await client.orders.list({ site: 'site' });
-
-            console.log(orders);
+            // Automatically fetches more pages as needed.
+            for await (const orderListResponse of client.orders.list({ site: 'site' })) {
+              console.log(orderListResponse.id);
+            }
   /v1/orders/sample:
     get:
       description: Retrieves a sample of orders with basic information
       summary: List sample orders
       tags: []
-      parameters: []
+      parameters:
+        - name: cursor
+          in: query
+          description: Pagination cursor
+          schema:
+            type: string
+        - name: pageSize
+          in: query
+          description: 'Number of items per page (default: 10, max: 25)'
+          schema:
+            type: number
+            nullable: true
       operationId: getOrdersSample
       responses:
         '200':
-          description: Array of order webhook events
+          description: Successful orders listing response
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      format: uuid
-                      description: Webhook event ID
-                    created:
-                      type: number
-                      description: Unix timestamp when event was created
-                    type:
-                      type: string
-                      enum:
-                        - order.created
-                      description: Event type
-                    data:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
                       type: object
                       properties:
                         id:
                           type: string
                           format: uuid
-                          description: Order ID
-                        orderNumber:
+                          description: Webhook event ID
+                        created:
                           type: number
-                          description: Order number
-                        createdAt:
+                          description: Unix timestamp when event was created
+                        type:
                           type: string
-                          description: Order creation date ISO string
-                        status:
-                          type: string
-                          description: Order status
-                        totalInCents:
-                          type: number
-                          description: Total amount in cents
-                        currency:
-                          type: string
-                          description: Currency code
-                        customerName:
-                          type: string
-                          description: Customer full name
-                        customerEmail:
-                          type: string
-                          description: Customer email
-                        orderItems:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              id:
-                                type: string
-                                format: uuid
-                                description: Order item ID
-                              name:
-                                type: string
-                                description: Product name
-                              quantity:
-                                type: number
-                                description: Quantity ordered
-                              priceInCents:
-                                type: number
-                                description: Item price in cents
-                              originalPriceInCents:
-                                type: number
-                                description: Original price in cents
-                              taxInCents:
-                                type: number
-                                description: Tax amount in cents
-                            required:
-                              - id
-                              - name
-                              - quantity
-                              - priceInCents
-                              - originalPriceInCents
-                              - taxInCents
-                            description: Order item details
-                          description: Order items
-                        siteId:
-                          type: string
-                          format: uuid
-                          description: Site ID
+                          enum:
+                            - order.created
+                          description: Event type
+                        data:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                              description: Order ID
+                            orderNumber:
+                              type: number
+                              description: Order number
+                            createdAt:
+                              type: string
+                              description: Order creation date ISO string
+                            status:
+                              type: string
+                              description: Order status
+                            totalInCents:
+                              type: number
+                              description: Total amount in cents
+                            currency:
+                              type: string
+                              description: Currency code
+                            customerName:
+                              type: string
+                              description: Customer full name
+                            customerEmail:
+                              type: string
+                              description: Customer email
+                            orderItems:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                    format: uuid
+                                    description: Order item ID
+                                  name:
+                                    type: string
+                                    description: Product name
+                                  quantity:
+                                    type: number
+                                    description: Quantity ordered
+                                  priceInCents:
+                                    type: number
+                                    description: Item price in cents
+                                  originalPriceInCents:
+                                    type: number
+                                    description: Original price in cents
+                                  taxInCents:
+                                    type: number
+                                    description: Tax amount in cents
+                                required:
+                                  - id
+                                  - name
+                                  - quantity
+                                  - priceInCents
+                                  - originalPriceInCents
+                                  - taxInCents
+                                description: Order item details
+                              description: Order items
+                            siteId:
+                              type: string
+                              format: uuid
+                              description: Site ID
+                          required:
+                            - id
+                            - orderNumber
+                            - createdAt
+                            - status
+                            - totalInCents
+                            - currency
+                            - customerName
+                            - customerEmail
+                            - orderItems
+                            - siteId
+                          description: Order data
                       required:
                         - id
-                        - orderNumber
-                        - createdAt
-                        - status
-                        - totalInCents
-                        - currency
-                        - customerName
-                        - customerEmail
-                        - orderItems
-                        - siteId
-                      description: Order data
-                  required:
-                    - id
-                    - created
-                    - type
-                    - data
-                  description: Order webhook event
-                description: Array of order webhook events
+                        - created
+                        - type
+                        - data
+                      description: Order webhook event
+                    description: Array of order webhook events in the current page
+                  total:
+                    type: number
+                    description: Total number of orders
+                  pageInfo:
+                    type: object
+                    properties:
+                      hasNextPage:
+                        type: boolean
+                        description: Indicates if there are more pages after the current one
+                      hasPreviousPage:
+                        type: boolean
+                        description: Indicates if there are previous pages before the current one
+                      startCursor:
+                        type: string
+                        description: Cursor pointing to the first item in the current page, if available
+                      endCursor:
+                        type: string
+                        description: Cursor pointing to the last item in the current page, if available
+                    required:
+                      - hasNextPage
+                      - hasPreviousPage
+                    description: Pagination information
+                required:
+                  - items
+                  - total
+                  - pageInfo
+                description: Successful orders listing response
         '400':
           description: Bad request error response
           content:
@@ -4386,9 +4555,10 @@ paths:
               apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
             });
 
-            const response = await client.orders.listSample();
-
-            console.log(response);
+            // Automatically fetches more pages as needed.
+            for await (const orderListSampleResponse of client.orders.listSample()) {
+              console.log(orderListSampleResponse.id);
+            }
   /v1/sites/{siteId}/pages:
     get:
       description: Retrieves a paginated list of pages for a specific site.
