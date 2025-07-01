@@ -3071,6 +3071,26 @@ paths:
                 required:
                   - message
                 description: Unauthorized error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+            const invoice = await client.invoices.create({
+              invoiceDiscounts: [{ valueType: 'FIXED' }],
+              invoiceItems: [
+                { itemId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', quantity: 0, taxRate: 0, unitPriceInCents: 0 },
+              ],
+              siteContactId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+              siteId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+              status: 'DRAFT',
+            });
+
+            console.log(invoice.invoiceId);
   /v1/invoices/{invoiceId}/send:
     post:
       description: Sends a draft store invoice
@@ -3138,6 +3158,22 @@ paths:
                 required:
                   - message
                 description: Unauthorized error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: >-
+            import Fingertip from 'fingertip';
+
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+
+            const response = await client.invoices.send('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { siteSlug:
+            'siteSlug' });
+
+
+            console.log(response.success);
   /v1/invoices/{invoiceId}/void:
     post:
       description: Voids a store invoice
@@ -3200,6 +3236,18 @@ paths:
                 required:
                   - message
                 description: Unauthorized error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+            const response = await client.invoices.void('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+
+            console.log(response.success);
   /v1/invoices/{invoiceId}/mark-paid:
     post:
       description: Marks a store invoice as paid
@@ -3265,6 +3313,18 @@ paths:
                 required:
                   - message
                 description: Unauthorized error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+            const response = await client.invoices.markPaid('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+
+            console.log(response.success);
   /v1/invoices/{invoiceId}:
     delete:
       description: Deletes a draft store invoice
@@ -3319,6 +3379,18 @@ paths:
                 required:
                   - message
                 description: Unauthorized error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+            const invoice = await client.invoices.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+
+            console.log(invoice.success);
     put:
       description: Updates a store invoice
       summary: Update store invoice
@@ -3469,6 +3541,23 @@ paths:
                 required:
                   - message
                 description: Unauthorized error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+            const invoice = await client.invoices.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+              invoiceDiscounts: [{ valueType: 'FIXED' }],
+              invoiceItems: [
+                { itemId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', quantity: 0, taxRate: 0, unitPriceInCents: 0 },
+              ],
+            });
+
+            console.log(invoice.success);
   /v1/invoice-items:
     get:
       description: Retrieves a paginated list of invoice items
@@ -3605,6 +3694,21 @@ paths:
                 required:
                   - message
                 description: Unauthorized error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+            // Automatically fetches more pages as needed.
+            for await (const invoiceItemListResponse of client.invoiceItems.list({
+              siteId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+            })) {
+              console.log(invoiceItemListResponse.id);
+            }
     post:
       description: Creates a new invoice item
       summary: Create invoice item
@@ -3715,6 +3819,22 @@ paths:
                 required:
                   - message
                 description: Unauthorized error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+            const invoiceItem = await client.invoiceItems.create({
+              priceInCents: 0,
+              siteId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+              title: 'title',
+            });
+
+            console.log(invoiceItem.item);
   /v1/invoice-items/{itemId}:
     get:
       description: Retrieves a invoice item by ID
@@ -3808,6 +3928,18 @@ paths:
                 required:
                   - message
                 description: Unauthorized error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+            const invoiceItem = await client.invoiceItems.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+
+            console.log(invoiceItem.item);
     put:
       description: Updates a invoice item
       summary: Update invoice item
@@ -3878,6 +4010,18 @@ paths:
                 required:
                   - message
                 description: Unauthorized error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+            const invoiceItem = await client.invoiceItems.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+
+            console.log(invoiceItem.success);
     delete:
       description: Deletes a invoice item
       summary: Delete invoice item
@@ -3931,6 +4075,18 @@ paths:
                 required:
                   - message
                 description: Unauthorized error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+            const invoiceItem = await client.invoiceItems.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+
+            console.log(invoiceItem.success);
   /v1/orders:
     get:
       description: Retrieves orders with basic information
