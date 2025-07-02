@@ -3086,7 +3086,6 @@ paths:
                         format: uuid
                       itemId:
                         type: string
-                        format: uuid
                         description: Store item ID (optional for custom items)
                       unitPriceInCents:
                         type: number
@@ -3529,7 +3528,6 @@ paths:
                         format: uuid
                       itemId:
                         type: string
-                        format: uuid
                         description: Store item ID (optional for custom items)
                       unitPriceInCents:
                         type: number
