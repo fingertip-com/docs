@@ -2841,6 +2841,7 @@ paths:
               - PAID
               - VOID
               - OVERDUE
+              - REFUNDED
       operationId: getInvoices
       responses:
         '200':
@@ -2870,6 +2871,7 @@ paths:
                             - PAID
                             - VOID
                             - OVERDUE
+                            - REFUNDED
                           description: Current status of the invoice
                         currency:
                           type: string
@@ -3026,6 +3028,7 @@ paths:
                     - PAID
                     - VOID
                     - OVERDUE
+                    - REFUNDED
                   description: Invoice status
                 currency:
                   type: string
