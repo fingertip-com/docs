@@ -2149,6 +2149,92 @@ paths:
             });
 
             console.log(response.success);
+  /v1/bookings/{bookingId}/cancel:
+    post:
+      description: Cancels an existing booking as a host
+      summary: Cancel booking
+      tags: []
+      parameters:
+        - name: bookingId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Booking ID to cancel
+      operationId: cancelBooking
+      requestBody:
+        description: Body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                siteId:
+                  type: string
+                  format: uuid
+                  description: Site ID for permission validation
+                cancellationReason:
+                  type: string
+                  description: Reason for cancelling the booking
+                chargeCancellationFee:
+                  default: false
+                  type: boolean
+                  description: Whether to charge a cancellation fee
+              required:
+                - siteId
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Whether the operation was successful
+                required:
+                  - success
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
+        '404':
+          description: Booking not found error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Booking not found error response
   /v1/event-types:
     get:
       description: Retrieves a paginated list of published event types for a specific site
