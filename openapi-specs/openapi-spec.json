@@ -2235,6 +2235,20 @@ paths:
                 required:
                   - message
                 description: Booking not found error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+            const response = await client.bookings.cancel('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+              siteId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+            });
+
+            console.log(response.success);
   /v1/event-types:
     get:
       description: Retrieves a paginated list of published event types for a specific site
