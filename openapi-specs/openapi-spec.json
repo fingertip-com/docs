@@ -1708,6 +1708,317 @@ paths:
             })) {
               console.log(bookingListResponse.id);
             }
+  /v1/bookings/requests:
+    get:
+      description: Retrieves a paginated list of pending booking requests for a site
+      summary: List booking requests
+      tags: []
+      parameters:
+        - name: cursor
+          in: query
+          description: Pagination cursor
+          schema:
+            type: string
+        - name: pageSize
+          in: query
+          description: 'Number of items per page (default: 10, max: 25)'
+          schema:
+            type: number
+            nullable: true
+        - name: siteId
+          in: query
+          description: Site ID to fetch booking requests for
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: sortBy
+          in: query
+          description: 'Field to sort by (default: updatedAt)'
+          schema:
+            type: string
+            enum:
+              - createdAt
+              - updatedAt
+        - name: sortDirection
+          in: query
+          description: 'Sort direction (default: desc)'
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      operationId: getBookingRequests
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: number
+                    description: Total number of booking requests matching the query
+                  pageInfo:
+                    type: object
+                    properties:
+                      hasNextPage:
+                        type: boolean
+                        description: Indicates if there are more pages after the current one
+                      hasPreviousPage:
+                        type: boolean
+                        description: Indicates if there are previous pages before the current one
+                      startCursor:
+                        type: string
+                        description: Cursor pointing to the first item in the current page, if available
+                      endCursor:
+                        type: string
+                        description: Cursor pointing to the last item in the current page, if available
+                    required:
+                      - hasNextPage
+                      - hasPreviousPage
+                    description: Pagination information
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Unique identifier for the booking
+                        userId:
+                          oneOf:
+                            - type: string
+                            - type: string
+                              format: 'null'
+                              nullable: true
+                          description: ID of the user who created the booking, can be null
+                          nullable: true
+                        siteId:
+                          oneOf:
+                            - type: string
+                            - type: string
+                              format: 'null'
+                              nullable: true
+                          description: ID of the site where the booking was made, can be null
+                          nullable: true
+                        eventTypeId:
+                          oneOf:
+                            - type: string
+                            - type: string
+                              format: 'null'
+                              nullable: true
+                          description: ID of the event type for this booking, can be null
+                          nullable: true
+                        response:
+                          oneOf:
+                            - nullable: true
+                            - type: string
+                              format: 'null'
+                              nullable: true
+                          description: Custom response data associated with the booking, can be null
+                          nullable: true
+                        startTime:
+                          type: string
+                          format: date-time
+                          description: Start date and time of the booking
+                        endTime:
+                          type: string
+                          format: date-time
+                          description: End date and time of the booking
+                        attendees:
+                          description: List of attendees for the booking
+                          nullable: true
+                        location:
+                          oneOf:
+                            - type: string
+                            - type: string
+                              format: 'null'
+                              nullable: true
+                          description: Location where the booking will take place, can be null
+                          nullable: true
+                        createdAt:
+                          type: string
+                          format: date-time
+                          description: Date and time when the booking was created
+                        updatedAt:
+                          type: string
+                          format: date-time
+                          description: Date and time when the booking was last updated
+                        status:
+                          type: string
+                          enum:
+                            - CANCELLED
+                            - ACCEPTED
+                            - REJECTED
+                            - PENDING
+                            - COMPLETED
+                            - NO_SHOW
+                            - REFUNDED
+                            - PENDING_CONFIRMATION
+                          description: Current status of the booking
+                        destinationCalendarId:
+                          oneOf:
+                            - type: string
+                            - type: string
+                              format: 'null'
+                              nullable: true
+                          description: ID of the destination calendar for this booking, can be null
+                          nullable: true
+                        cancellationReason:
+                          oneOf:
+                            - type: string
+                            - type: string
+                              format: 'null'
+                              nullable: true
+                          description: Reason for cancellation if the booking was cancelled, can be null
+                          nullable: true
+                        rejectionReason:
+                          oneOf:
+                            - type: string
+                            - type: string
+                              format: 'null'
+                              nullable: true
+                          description: Reason for rejection if the booking was rejected, can be null
+                          nullable: true
+                        rescheduledReason:
+                          oneOf:
+                            - type: string
+                            - type: string
+                              format: 'null'
+                              nullable: true
+                          description: Reason for rescheduling if the booking was rescheduled, can be null
+                          nullable: true
+                        rescheduled:
+                          oneOf:
+                            - type: boolean
+                            - type: string
+                              format: 'null'
+                              nullable: true
+                          description: Indicates if the booking has been rescheduled, can be null
+                          nullable: true
+                        fromReschedule:
+                          oneOf:
+                            - type: string
+                            - type: string
+                              format: 'null'
+                              nullable: true
+                          description: ID of the original booking if this is a rescheduled booking, can be null
+                          nullable: true
+                        recurringEventId:
+                          oneOf:
+                            - type: string
+                            - type: string
+                              format: 'null'
+                              nullable: true
+                          description: ID of the recurring event this booking belongs to, can be null
+                          nullable: true
+                        smsReminderNumber:
+                          oneOf:
+                            - type: string
+                            - type: string
+                              format: 'null'
+                              nullable: true
+                          description: Phone number for SMS reminders, can be null
+                          nullable: true
+                        metadata:
+                          oneOf:
+                            - nullable: true
+                            - type: string
+                              format: 'null'
+                              nullable: true
+                          description: Additional metadata for the booking, can be null
+                          nullable: true
+                        calendarEvent:
+                          oneOf:
+                            - nullable: true
+                            - type: string
+                              format: 'null'
+                              nullable: true
+                          description: Calendar event data associated with the booking, can be null
+                          nullable: true
+                        isRecorded:
+                          type: boolean
+                          description: Indicates if the booking event will be recorded
+                        title:
+                          oneOf:
+                            - type: string
+                            - type: string
+                              format: 'null'
+                              nullable: true
+                          description: Title of the booking, can be null
+                          nullable: true
+                        description:
+                          oneOf:
+                            - type: string
+                            - type: string
+                              format: 'null'
+                              nullable: true
+                          description: Description of the booking, can be null
+                          nullable: true
+                        source:
+                          oneOf:
+                            - type: string
+                            - type: string
+                              format: 'null'
+                              nullable: true
+                          description: Source of the booking (e.g., website, app), can be null
+                          nullable: true
+                      required:
+                        - id
+                        - userId
+                        - siteId
+                        - eventTypeId
+                        - startTime
+                        - endTime
+                        - location
+                        - createdAt
+                        - updatedAt
+                        - status
+                        - destinationCalendarId
+                        - cancellationReason
+                        - rejectionReason
+                        - rescheduledReason
+                        - rescheduled
+                        - fromReschedule
+                        - recurringEventId
+                        - smsReminderNumber
+                        - isRecorded
+                        - title
+                        - description
+                        - source
+                    description: List of pending booking requests in the current page
+                required:
+                  - total
+                  - pageInfo
+                  - items
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
   /v1/bookings/sample:
     get:
       description: Retrieves a sample of bookings with basic information
