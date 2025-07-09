@@ -3844,9 +3844,6 @@ paths:
                     - OVERDUE
                     - REFUNDED
                   description: Invoice status
-                currency:
-                  type: string
-                  description: Currency code
                 dueAt:
                   type: string
                   description: Due date (ISO string)
@@ -4323,9 +4320,6 @@ paths:
                 notes:
                   type: string
                   description: Notes
-                currency:
-                  type: string
-                  description: Currency
                 paymentReference:
                   type: string
                   description: Payment reference
@@ -4982,6 +4976,293 @@ paths:
             const invoiceItem = await client.invoiceItems.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
 
             console.log(invoiceItem.success);
+  /v1/messages:
+    get:
+      description: Retrieves messages for a site contact or all site owner messages
+      summary: List messages
+      tags: []
+      parameters:
+        - name: siteSlug
+          in: query
+          description: Site slug to filter messages
+          required: true
+          schema:
+            type: string
+        - name: siteContactId
+          in: query
+          description: Site contact ID to filter messages for specific contact
+          schema:
+            type: string
+            format: uuid
+        - name: pageSize
+          in: query
+          description: 'Number of items per page (default: 10, max: 25)'
+          schema:
+            type: number
+            nullable: true
+        - name: cursor
+          in: query
+          description: Pagination cursor
+          schema:
+            type: string
+      operationId: getMessages
+      responses:
+        '200':
+          description: Messages list with pagination
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          description: Unique identifier for the message
+                        siteContactId:
+                          type: string
+                          format: uuid
+                          description: ID of the site contact recipient
+                        content:
+                          type: string
+                          description: Plain text content of the message
+                        sentAt:
+                          oneOf:
+                            - type: string
+                            - type: string
+                              format: 'null'
+                              nullable: true
+                          description: Timestamp when message was sent, can be null
+                          nullable: true
+                        createdAt:
+                          type: string
+                          description: Timestamp when message was created
+                        status:
+                          type: string
+                          enum:
+                            - QUEUED
+                            - SENDING
+                            - DELIVERED
+                            - OPENED
+                            - CLICKED
+                            - FAILED
+                            - REJECTED
+                          description: Delivery status of the message
+                      required:
+                        - id
+                        - siteContactId
+                        - content
+                        - sentAt
+                        - createdAt
+                        - status
+                      description: Schema for a simplified message entity
+                  total:
+                    type: number
+                  pageInfo:
+                    type: object
+                    properties:
+                      hasNextPage:
+                        type: boolean
+                        description: Indicates if there are more pages after the current one
+                      hasPreviousPage:
+                        type: boolean
+                        description: Indicates if there are previous pages before the current one
+                      startCursor:
+                        type: string
+                        description: Cursor pointing to the first item in the current page, if available
+                      endCursor:
+                        type: string
+                        description: Cursor pointing to the last item in the current page, if available
+                    required:
+                      - hasNextPage
+                      - hasPreviousPage
+                    description: Pagination information for cursor-based pagination
+                required:
+                  - items
+                  - total
+                  - pageInfo
+                description: Messages list with pagination
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+            // Automatically fetches more pages as needed.
+            for await (const messageListResponse of client.messages.list({ siteSlug: 'siteSlug' })) {
+              console.log(messageListResponse.id);
+            }
+    post:
+      description: Sends a message as the site owner to a site contact
+      summary: Create message
+      tags: []
+      parameters: []
+      operationId: createMessage
+      requestBody:
+        description: Body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                siteSlug:
+                  type: string
+                  description: Slug of the site
+                siteContactId:
+                  type: string
+                  format: uuid
+                  description: ID of the site contact recipient
+                content:
+                  type: string
+                  description: Plain text content of the message
+              required:
+                - siteSlug
+                - siteContactId
+                - content
+              description: Data for creating a new message
+      responses:
+        '200':
+          description: Successful message creation response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier for the message
+                      siteContactId:
+                        type: string
+                        format: uuid
+                        description: ID of the site contact recipient
+                      content:
+                        type: string
+                        description: Plain text content of the message
+                      sentAt:
+                        oneOf:
+                          - type: string
+                          - type: string
+                            format: 'null'
+                            nullable: true
+                        description: Timestamp when message was sent, can be null
+                        nullable: true
+                      createdAt:
+                        type: string
+                        description: Timestamp when message was created
+                      status:
+                        type: string
+                        enum:
+                          - QUEUED
+                          - SENDING
+                          - DELIVERED
+                          - OPENED
+                          - CLICKED
+                          - FAILED
+                          - REJECTED
+                        description: Delivery status of the message
+                    required:
+                      - id
+                      - siteContactId
+                      - content
+                      - sentAt
+                      - createdAt
+                      - status
+                    description: The created message
+                required:
+                  - message
+                description: Successful message creation response
+        '400':
+          description: Validation error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Validation error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
+        '404':
+          description: Site contact not found error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Site contact not found error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+            const message = await client.messages.create({
+              content: 'content',
+              siteContactId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+              siteSlug: 'siteSlug',
+            });
+
+            console.log(message.message);
   /v1/orders:
     get:
       description: Retrieves orders with basic information
