@@ -6854,6 +6854,996 @@ paths:
             const theme = await client.pages.theme.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
 
             console.log(theme.pageTheme);
+  /v1/quotes:
+    get:
+      description: Retrieves a paginated list of quotes for sites the user has access to
+      summary: List quotes
+      tags: []
+      parameters:
+        - name: siteSlug
+          in: query
+          description: Site slug to retrieve quotes for
+          required: true
+          schema:
+            type: string
+        - name: cursor
+          in: query
+          description: Pagination cursor
+          schema:
+            type: string
+        - name: pageSize
+          in: query
+          description: 'Number of items per page (default: 10, max: 25)'
+          schema:
+            type: number
+            nullable: true
+        - name: search
+          in: query
+          description: Search term
+          schema:
+            type: string
+        - name: statusFilters
+          in: query
+          description: Filter by quote status
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - DRAFT
+                - PENDING
+                - ACCEPTED
+                - DECLINED
+                - EXPIRED
+        - name: siteContactId
+          in: query
+          description: Site contact ID
+          schema:
+            type: string
+            format: uuid
+      operationId: getQuotes
+      responses:
+        '200':
+          description: Successful quotes listing response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quotes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        quote:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                              description: Unique identifier for the quote
+                            quoteNumber:
+                              type: number
+                              description: Sequential quote number
+                            status:
+                              type: string
+                              enum:
+                                - DRAFT
+                                - PENDING
+                                - ACCEPTED
+                                - DECLINED
+                                - EXPIRED
+                              description: Current status of the quote
+                            currency:
+                              type: string
+                              description: Currency code for the quote
+                            totalInCents:
+                              type: number
+                              description: Total amount in cents
+                            totalTaxInCents:
+                              type: number
+                              description: Total tax amount in cents
+                            expiresAt:
+                              type: string
+                              format: date-time
+                              description: Expiration date for the quote
+                            createdAt:
+                              type: string
+                              format: date-time
+                              description: Date and time when the quote was created
+                            updatedAt:
+                              type: string
+                              format: date-time
+                              description: Date and time when the quote was last updated
+                            siteId:
+                              type: string
+                              format: uuid
+                              description: ID of the site this quote belongs to
+                            memo:
+                              type: string
+                              description: Optional memo for the quote
+                              nullable: true
+                            footer:
+                              type: string
+                              description: Optional footer for the quote
+                              nullable: true
+                            notes:
+                              type: string
+                              description: Optional notes for the quote
+                              nullable: true
+                            priceIncludesTax:
+                              type: boolean
+                              description: Whether prices include tax
+                          required:
+                            - id
+                            - quoteNumber
+                            - status
+                            - currency
+                            - totalInCents
+                            - totalTaxInCents
+                            - expiresAt
+                            - createdAt
+                            - updatedAt
+                            - siteId
+                            - memo
+                            - footer
+                            - notes
+                            - priceIncludesTax
+                          description: Schema for a quote
+                        contact:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                            email:
+                              type: string
+                              format: email
+                            name:
+                              type: string
+                              nullable: true
+                          required:
+                            - id
+                            - email
+                            - name
+                      required:
+                        - quote
+                        - contact
+                    description: Array of quotes in the current page
+                  total:
+                    type: number
+                    description: Total number of quotes
+                  pageInfo:
+                    type: object
+                    properties:
+                      hasNextPage:
+                        type: boolean
+                        description: Indicates if there are more pages after the current one
+                      hasPreviousPage:
+                        type: boolean
+                        description: Indicates if there are previous pages before the current one
+                      startCursor:
+                        type: string
+                        description: Cursor pointing to the first item in the current page, if available
+                      endCursor:
+                        type: string
+                        description: Cursor pointing to the last item in the current page, if available
+                    required:
+                      - hasNextPage
+                      - hasPreviousPage
+                    description: Pagination information
+                required:
+                  - quotes
+                  - total
+                  - pageInfo
+                description: Successful quotes listing response
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
+    post:
+      description: Creates a new store quote
+      summary: Create store quote
+      tags: []
+      parameters: []
+      operationId: createStoreQuote
+      requestBody:
+        description: Body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                siteSlug:
+                  type: string
+                  description: Site slug
+                siteContactId:
+                  type: string
+                  format: uuid
+                  description: Site contact ID
+                status:
+                  type: string
+                  enum:
+                    - DRAFT
+                    - PENDING
+                    - ACCEPTED
+                    - DECLINED
+                    - EXPIRED
+                  description: Quote status
+                expiresAt:
+                  type: string
+                  description: Expiration date (ISO string)
+                footer:
+                  type: string
+                  description: Footer text
+                memo:
+                  type: string
+                  description: Memo
+                notes:
+                  type: string
+                  description: Notes
+                currency:
+                  type: string
+                  description: Currency code
+                quoteDiscounts:
+                  default: []
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      discountId:
+                        type: string
+                        format: uuid
+                      valueType:
+                        type: string
+                        enum:
+                          - FIXED
+                          - PERCENT
+                        description: Discount value type
+                      valueFixedInCents:
+                        type: number
+                        description: Fixed discount in cents
+                      valuePercent:
+                        type: number
+                        description: Percentage discount
+                      lineNumber:
+                        type: number
+                        description: Line number
+                    required:
+                      - valueType
+                    description: Schema for a store quote discount
+                  description: Quote discounts
+                quoteItems:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      itemId:
+                        type: string
+                        description: Store item ID (optional for custom items)
+                      unitPriceInCents:
+                        type: number
+                        description: Unit price in cents
+                      description:
+                        type: string
+                        description: Description of the item
+                      quantity:
+                        type: number
+                        description: Quantity
+                      taxRate:
+                        type: number
+                        description: Tax rate
+                      lineNumber:
+                        type: number
+                        description: Line number
+                    required:
+                      - unitPriceInCents
+                      - description
+                      - quantity
+                      - taxRate
+                    description: Schema for a store quote item
+                  description: Quote items
+              required:
+                - siteSlug
+                - siteContactId
+                - status
+                - quoteItems
+              description: Store quote creation data
+      responses:
+        '200':
+          description: Successful quote creation response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quoteId:
+                    type: string
+                    format: uuid
+                    description: Created quote ID
+                required:
+                  - quoteId
+                description: Successful quote creation response
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
+  /v1/quotes/{quoteId}/send:
+    post:
+      description: Sends a draft store quote
+      summary: Send store quote
+      tags: []
+      parameters:
+        - name: quoteId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Quote ID
+      operationId: sendStoreQuote
+      requestBody:
+        description: Body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                siteSlug:
+                  type: string
+                  description: Site slug
+              required:
+                - siteSlug
+              description: Send quote data
+      responses:
+        '200':
+          description: Successful send response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Success status
+                required:
+                  - success
+                description: Successful send response
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
+  /v1/quotes/{quoteId}/accept:
+    post:
+      description: Accepts a store quote
+      summary: Accept store quote
+      tags: []
+      parameters:
+        - name: quoteId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Quote ID
+      operationId: acceptStoreQuote
+      requestBody:
+        description: Body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+              description: Empty body
+      responses:
+        '200':
+          description: Successful accept response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Success status
+                required:
+                  - success
+                description: Successful accept response
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
+  /v1/quotes/{quoteId}/decline:
+    post:
+      description: Declines a store quote
+      summary: Decline store quote
+      tags: []
+      parameters:
+        - name: quoteId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Quote ID
+      operationId: declineStoreQuote
+      requestBody:
+        description: Body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+              description: Empty body
+      responses:
+        '200':
+          description: Successful decline response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Success status
+                required:
+                  - success
+                description: Successful decline response
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
+  /v1/quotes/{quoteId}:
+    delete:
+      description: Deletes a store quote
+      summary: Delete store quote
+      tags: []
+      parameters:
+        - name: quoteId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Quote ID
+      operationId: deleteStoreQuote
+      responses:
+        '200':
+          description: Successful deletion response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Success status
+                required:
+                  - success
+                description: Successful deletion response
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
+    put:
+      description: Updates a store quote
+      summary: Update store quote
+      tags: []
+      parameters:
+        - name: quoteId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Quote ID
+      operationId: updateStoreQuote
+      requestBody:
+        description: Body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                siteContactId:
+                  type: string
+                  format: uuid
+                  description: Site contact ID
+                expiresAt:
+                  type: string
+                  description: Expiration date (ISO string)
+                memo:
+                  type: string
+                  description: Memo
+                footer:
+                  type: string
+                  description: Footer
+                notes:
+                  type: string
+                  description: Notes
+                quoteItems:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      itemId:
+                        type: string
+                        description: Store item ID (optional for custom items)
+                      unitPriceInCents:
+                        type: number
+                        description: Unit price in cents
+                      description:
+                        type: string
+                        description: Description of the item
+                      quantity:
+                        type: number
+                        description: Quantity
+                      taxRate:
+                        type: number
+                        description: Tax rate
+                      lineNumber:
+                        type: number
+                        description: Line number
+                    required:
+                      - unitPriceInCents
+                      - description
+                      - quantity
+                      - taxRate
+                    description: Schema for a store quote item
+                  description: Quote items
+                quoteDiscounts:
+                  default: []
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      discountId:
+                        type: string
+                        format: uuid
+                      valueType:
+                        type: string
+                        enum:
+                          - FIXED
+                          - PERCENT
+                        description: Discount value type
+                      valueFixedInCents:
+                        type: number
+                        description: Fixed discount in cents
+                      valuePercent:
+                        type: number
+                        description: Percentage discount
+                      lineNumber:
+                        type: number
+                        description: Line number
+                    required:
+                      - valueType
+                    description: Schema for a store quote discount
+                  description: Quote discounts
+              required:
+                - quoteItems
+              description: Store quote update data
+      responses:
+        '200':
+          description: Successful update response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Success status
+                required:
+                  - success
+                description: Successful update response
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
+    get:
+      description: Retrieves a single store quote by ID
+      summary: Get store quote
+      tags: []
+      parameters:
+        - name: quoteId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Quote ID
+      operationId: getStoreQuote
+      responses:
+        '200':
+          description: Successful quote retrieval response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quote:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier for the quote
+                      quoteNumber:
+                        type: number
+                        description: Sequential quote number
+                      status:
+                        type: string
+                        enum:
+                          - DRAFT
+                          - PENDING
+                          - ACCEPTED
+                          - DECLINED
+                          - EXPIRED
+                        description: Current status of the quote
+                      currency:
+                        type: string
+                        description: Currency code for the quote
+                      totalInCents:
+                        type: number
+                        description: Total amount in cents
+                      totalTaxInCents:
+                        type: number
+                        description: Total tax amount in cents
+                      expiresAt:
+                        type: string
+                        format: date-time
+                        description: Expiration date for the quote
+                      createdAt:
+                        type: string
+                        format: date-time
+                        description: Date and time when the quote was created
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        description: Date and time when the quote was last updated
+                      siteId:
+                        type: string
+                        format: uuid
+                        description: ID of the site this quote belongs to
+                      memo:
+                        type: string
+                        description: Optional memo for the quote
+                        nullable: true
+                      footer:
+                        type: string
+                        description: Optional footer for the quote
+                        nullable: true
+                      notes:
+                        type: string
+                        description: Optional notes for the quote
+                        nullable: true
+                      priceIncludesTax:
+                        type: boolean
+                        description: Whether prices include tax
+                    required:
+                      - id
+                      - quoteNumber
+                      - status
+                      - currency
+                      - totalInCents
+                      - totalTaxInCents
+                      - expiresAt
+                      - createdAt
+                      - updatedAt
+                      - siteId
+                      - memo
+                      - footer
+                      - notes
+                      - priceIncludesTax
+                    description: Schema for a quote
+                  quoteItems:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        quoteItem:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                            unitPriceInCents:
+                              type: number
+                            description:
+                              type: string
+                            quantity:
+                              type: number
+                            taxRate:
+                              type: number
+                            lineNumber:
+                              type: number
+                          required:
+                            - id
+                            - unitPriceInCents
+                            - description
+                            - quantity
+                            - taxRate
+                            - lineNumber
+                        item:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                              description: Unique identifier for the store item
+                            title:
+                              type: string
+                              description: Title of the store item
+                            description:
+                              type: string
+                              description: Optional description
+                              nullable: true
+                            priceInCents:
+                              type: number
+                              description: Price in cents
+                            currency:
+                              type: string
+                              description: Currency code
+                            taxRate:
+                              type: number
+                              description: Tax rate
+                              nullable: true
+                            siteId:
+                              type: string
+                              format: uuid
+                              description: Site ID
+                            createdAt:
+                              type: string
+                              format: date-time
+                              description: Date and time when the item was created
+                            updatedAt:
+                              type: string
+                              format: date-time
+                              description: Date and time when the item was last updated
+                            systemOnly:
+                              type: boolean
+                              description: Whether the item is system only
+                          required:
+                            - id
+                            - title
+                            - description
+                            - priceInCents
+                            - currency
+                            - taxRate
+                            - siteId
+                            - createdAt
+                            - updatedAt
+                            - systemOnly
+                          description: Schema for a store item
+                      required:
+                        - quoteItem
+                  quoteDiscounts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        valueType:
+                          type: string
+                          enum:
+                            - FIXED
+                            - PERCENT
+                        valueFixedInCents:
+                          type: number
+                        valuePercent:
+                          type: number
+                        lineNumber:
+                          type: number
+                      required:
+                        - id
+                        - valueType
+                        - lineNumber
+                required:
+                  - quote
+                  - quoteItems
+                  - quoteDiscounts
+                description: Successful quote retrieval response
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request error response
+        '401':
+          description: Unauthorized error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Unauthorized error response
+        '404':
+          description: Quote not found error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Quote not found error response
   /v1/sites:
     post:
       description: Creates a new site with associated pages, themes, and blocks
