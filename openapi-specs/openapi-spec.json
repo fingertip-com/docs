@@ -6910,7 +6910,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  quotes:
+                  items:
                     type: array
                     items:
                       type: object
@@ -7033,7 +7033,7 @@ paths:
                       - hasPreviousPage
                     description: Pagination information
                 required:
-                  - quotes
+                  - items
                   - total
                   - pageInfo
                 description: Successful quotes listing response
@@ -7063,6 +7063,19 @@ paths:
                 required:
                   - message
                 description: Unauthorized error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+            // Automatically fetches more pages as needed.
+            for await (const quoteListResponse of client.quotes.list({ siteSlug: 'siteSlug' })) {
+              console.log(quoteListResponse.contact);
+            }
     post:
       description: Creates a new store quote
       summary: Create store quote
@@ -7175,7 +7188,7 @@ paths:
                 - quoteItems
               description: Store quote creation data
       responses:
-        '200':
+        '201':
           description: Successful quote creation response
           content:
             application/json:
@@ -7215,6 +7228,23 @@ paths:
                 required:
                   - message
                 description: Unauthorized error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+            const quote = await client.quotes.create({
+              quoteItems: [{ description: 'description', quantity: 0, taxRate: 0, unitPriceInCents: 0 }],
+              siteContactId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+              siteSlug: 'siteSlug',
+              status: 'DRAFT',
+            });
+
+            console.log(quote.quoteId);
   /v1/quotes/{quoteId}/send:
     post:
       description: Sends a draft store quote
@@ -7282,6 +7312,22 @@ paths:
                 required:
                   - message
                 description: Unauthorized error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: >-
+            import Fingertip from 'fingertip';
+
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+
+            const response = await client.quotes.send('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { siteSlug:
+            'siteSlug' });
+
+
+            console.log(response.success);
   /v1/quotes/{quoteId}/accept:
     post:
       description: Accepts a store quote
@@ -7303,7 +7349,7 @@ paths:
             schema:
               type: object
               properties: {}
-              description: Empty body
+              description: Empty body for accept request
       responses:
         '200':
           description: Successful accept response
@@ -7365,7 +7411,7 @@ paths:
             schema:
               type: object
               properties: {}
-              description: Empty body
+              description: Empty body for decline request
       responses:
         '200':
           description: Successful decline response
@@ -7460,6 +7506,18 @@ paths:
                 required:
                   - message
                 description: Unauthorized error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+            const quote = await client.quotes.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+
+            console.log(quote.success);
     put:
       description: Updates a store quote
       summary: Update store quote
@@ -7600,6 +7658,20 @@ paths:
                 required:
                   - message
                 description: Unauthorized error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+            const quote = await client.quotes.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+              quoteItems: [{ description: 'description', quantity: 0, taxRate: 0, unitPriceInCents: 0 }],
+            });
+
+            console.log(quote.success);
     get:
       description: Retrieves a single store quote by ID
       summary: Get store quote
@@ -7844,6 +7916,18 @@ paths:
                 required:
                   - message
                 description: Quote not found error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+            const quote = await client.quotes.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+
+            console.log(quote.quote);
   /v1/sites:
     post:
       description: Creates a new site with associated pages, themes, and blocks
