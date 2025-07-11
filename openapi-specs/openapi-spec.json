@@ -5754,88 +5754,6 @@ paths:
                           default: 1
                           type: number
                           description: Display position of the page within the site
-                        blocks:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              id:
-                                type: string
-                                format: uuid
-                                description: Unique identifier for the block
-                              pageId:
-                                type: string
-                                format: uuid
-                                description: ID of the page this block belongs to
-                              name:
-                                type: string
-                                description: Name of the block
-                              content:
-                                nullable: true
-                                description: Content of the block, can be null
-                              createdAt:
-                                type: string
-                                format: date-time
-                                description: Date and time when the block was created
-                              updatedAt:
-                                type: string
-                                format: date-time
-                                description: Date and time when the block was last updated
-                              kind:
-                                type: string
-                                description: Type or category of the block, can be null
-                                nullable: true
-                              isComponent:
-                                default: false
-                                type: boolean
-                                description: Whether this block is a component
-                              componentBlockId:
-                                type: string
-                                format: uuid
-                                description: ID of the component block if this is an instance, can be null
-                                nullable: true
-                            required:
-                              - id
-                              - pageId
-                              - name
-                              - createdAt
-                              - updatedAt
-                              - kind
-                              - componentBlockId
-                          description: Array of content blocks associated with the page
-                        pageTheme:
-                          type: object
-                          properties:
-                            id:
-                              type: string
-                              format: uuid
-                              description: Unique identifier for the page theme
-                            content:
-                              nullable: true
-                              description: Theme content configuration, can be null
-                            createdAt:
-                              type: string
-                              format: date-time
-                              description: Date and time when the theme was created
-                            updatedAt:
-                              type: string
-                              format: date-time
-                              description: Date and time when the theme was last updated
-                            isComponent:
-                              default: false
-                              type: boolean
-                              description: Whether this theme is a reusable component
-                            componentPageThemeId:
-                              type: string
-                              description: ID of the parent component theme if this is an instance, can be null
-                              nullable: true
-                          required:
-                            - id
-                            - createdAt
-                            - updatedAt
-                            - componentPageThemeId
-                          description: Theme applied to the page, can be null
-                          nullable: true
                       required:
                         - id
                         - slug
@@ -5845,9 +5763,7 @@ paths:
                         - updatedAt
                         - description
                         - pageThemeId
-                        - blocks
-                        - pageTheme
-                      description: Page schema including related blocks and theme information
+                      description: Schema for a page entity
                     description: Array of pages in the current page of results
                   total:
                     type: number
@@ -5967,57 +5883,11 @@ paths:
                   default: 1
                   type: number
                   description: Display position of the page within the site
-                pageTheme:
-                  type: object
-                  properties:
-                    content:
-                      nullable: true
-                      description: Theme content configuration, can be null
-                    isComponent:
-                      default: false
-                      type: boolean
-                      description: Whether this theme is a reusable component
-                    componentPageThemeId:
-                      type: string
-                      description: ID of the parent component theme if this is an instance, can be null
-                      nullable: true
-                  description: Theme to apply to the new page
-                blocks:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                        description: Name of the block
-                      content:
-                        nullable: true
-                        description: Content of the block, can be null
-                      kind:
-                        type: string
-                        description: Type or category of the block, can be null
-                        nullable: true
-                      isComponent:
-                        default: false
-                        type: boolean
-                        description: Whether this block is a component
-                      componentBlockId:
-                        type: string
-                        format: uuid
-                        description: ID of the component block if this is an instance, can be null
-                        nullable: true
-                    required:
-                      - name
-                      - kind
-                      - componentBlockId
-                    description: Schema for creating a new block
-                  description: Initial content blocks for the page
               required:
                 - slug
                 - name
                 - siteId
-                - pageTheme
-              description: Data for creating a new page with theme and blocks
+              description: Schema for creating a new page
       responses:
         '201':
           description: Successful page creation response
@@ -6074,88 +5944,6 @@ paths:
                         default: 1
                         type: number
                         description: Display position of the page within the site
-                      blocks:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            id:
-                              type: string
-                              format: uuid
-                              description: Unique identifier for the block
-                            pageId:
-                              type: string
-                              format: uuid
-                              description: ID of the page this block belongs to
-                            name:
-                              type: string
-                              description: Name of the block
-                            content:
-                              nullable: true
-                              description: Content of the block, can be null
-                            createdAt:
-                              type: string
-                              format: date-time
-                              description: Date and time when the block was created
-                            updatedAt:
-                              type: string
-                              format: date-time
-                              description: Date and time when the block was last updated
-                            kind:
-                              type: string
-                              description: Type or category of the block, can be null
-                              nullable: true
-                            isComponent:
-                              default: false
-                              type: boolean
-                              description: Whether this block is a component
-                            componentBlockId:
-                              type: string
-                              format: uuid
-                              description: ID of the component block if this is an instance, can be null
-                              nullable: true
-                          required:
-                            - id
-                            - pageId
-                            - name
-                            - createdAt
-                            - updatedAt
-                            - kind
-                            - componentBlockId
-                        description: Array of content blocks associated with the page
-                      pageTheme:
-                        type: object
-                        properties:
-                          id:
-                            type: string
-                            format: uuid
-                            description: Unique identifier for the page theme
-                          content:
-                            nullable: true
-                            description: Theme content configuration, can be null
-                          createdAt:
-                            type: string
-                            format: date-time
-                            description: Date and time when the theme was created
-                          updatedAt:
-                            type: string
-                            format: date-time
-                            description: Date and time when the theme was last updated
-                          isComponent:
-                            default: false
-                            type: boolean
-                            description: Whether this theme is a reusable component
-                          componentPageThemeId:
-                            type: string
-                            description: ID of the parent component theme if this is an instance, can be null
-                            nullable: true
-                        required:
-                          - id
-                          - createdAt
-                          - updatedAt
-                          - componentPageThemeId
-                        description: Theme applied to the page, can be null
-                        nullable: true
                     required:
                       - id
                       - slug
@@ -6165,8 +5953,6 @@ paths:
                       - updatedAt
                       - description
                       - pageThemeId
-                      - blocks
-                      - pageTheme
                     description: The newly created page with all relations
                 required:
                   - page
@@ -6195,7 +5981,6 @@ paths:
 
             const page = await client.sites.pages.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
               name: 'name',
-              pageTheme: {},
               body_siteId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
               slug: 'slug',
             });
@@ -6203,7 +5988,7 @@ paths:
             console.log(page.page);
   /v1/pages/{pageId}:
     get:
-      description: Retrieves a specific page by ID including all related blocks and theme information.
+      description: Retrieves a specific page by ID.
       summary: Get page
       tags: []
       parameters:
@@ -6271,88 +6056,6 @@ paths:
                         default: 1
                         type: number
                         description: Display position of the page within the site
-                      blocks:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            id:
-                              type: string
-                              format: uuid
-                              description: Unique identifier for the block
-                            pageId:
-                              type: string
-                              format: uuid
-                              description: ID of the page this block belongs to
-                            name:
-                              type: string
-                              description: Name of the block
-                            content:
-                              nullable: true
-                              description: Content of the block, can be null
-                            createdAt:
-                              type: string
-                              format: date-time
-                              description: Date and time when the block was created
-                            updatedAt:
-                              type: string
-                              format: date-time
-                              description: Date and time when the block was last updated
-                            kind:
-                              type: string
-                              description: Type or category of the block, can be null
-                              nullable: true
-                            isComponent:
-                              default: false
-                              type: boolean
-                              description: Whether this block is a component
-                            componentBlockId:
-                              type: string
-                              format: uuid
-                              description: ID of the component block if this is an instance, can be null
-                              nullable: true
-                          required:
-                            - id
-                            - pageId
-                            - name
-                            - createdAt
-                            - updatedAt
-                            - kind
-                            - componentBlockId
-                        description: Array of content blocks associated with the page
-                      pageTheme:
-                        type: object
-                        properties:
-                          id:
-                            type: string
-                            format: uuid
-                            description: Unique identifier for the page theme
-                          content:
-                            nullable: true
-                            description: Theme content configuration, can be null
-                          createdAt:
-                            type: string
-                            format: date-time
-                            description: Date and time when the theme was created
-                          updatedAt:
-                            type: string
-                            format: date-time
-                            description: Date and time when the theme was last updated
-                          isComponent:
-                            default: false
-                            type: boolean
-                            description: Whether this theme is a reusable component
-                          componentPageThemeId:
-                            type: string
-                            description: ID of the parent component theme if this is an instance, can be null
-                            nullable: true
-                        required:
-                          - id
-                          - createdAt
-                          - updatedAt
-                          - componentPageThemeId
-                        description: Theme applied to the page, can be null
-                        nullable: true
                     required:
                       - id
                       - slug
@@ -6362,8 +6065,6 @@ paths:
                       - updatedAt
                       - description
                       - pageThemeId
-                      - blocks
-                      - pageTheme
                     description: The requested page with all relations
                 required:
                   - page
@@ -6498,88 +6199,6 @@ paths:
                         default: 1
                         type: number
                         description: Display position of the page within the site
-                      blocks:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            id:
-                              type: string
-                              format: uuid
-                              description: Unique identifier for the block
-                            pageId:
-                              type: string
-                              format: uuid
-                              description: ID of the page this block belongs to
-                            name:
-                              type: string
-                              description: Name of the block
-                            content:
-                              nullable: true
-                              description: Content of the block, can be null
-                            createdAt:
-                              type: string
-                              format: date-time
-                              description: Date and time when the block was created
-                            updatedAt:
-                              type: string
-                              format: date-time
-                              description: Date and time when the block was last updated
-                            kind:
-                              type: string
-                              description: Type or category of the block, can be null
-                              nullable: true
-                            isComponent:
-                              default: false
-                              type: boolean
-                              description: Whether this block is a component
-                            componentBlockId:
-                              type: string
-                              format: uuid
-                              description: ID of the component block if this is an instance, can be null
-                              nullable: true
-                          required:
-                            - id
-                            - pageId
-                            - name
-                            - createdAt
-                            - updatedAt
-                            - kind
-                            - componentBlockId
-                        description: Array of content blocks associated with the page
-                      pageTheme:
-                        type: object
-                        properties:
-                          id:
-                            type: string
-                            format: uuid
-                            description: Unique identifier for the page theme
-                          content:
-                            nullable: true
-                            description: Theme content configuration, can be null
-                          createdAt:
-                            type: string
-                            format: date-time
-                            description: Date and time when the theme was created
-                          updatedAt:
-                            type: string
-                            format: date-time
-                            description: Date and time when the theme was last updated
-                          isComponent:
-                            default: false
-                            type: boolean
-                            description: Whether this theme is a reusable component
-                          componentPageThemeId:
-                            type: string
-                            description: ID of the parent component theme if this is an instance, can be null
-                            nullable: true
-                        required:
-                          - id
-                          - createdAt
-                          - updatedAt
-                          - componentPageThemeId
-                        description: Theme applied to the page, can be null
-                        nullable: true
                     required:
                       - id
                       - slug
@@ -6589,8 +6208,6 @@ paths:
                       - updatedAt
                       - description
                       - pageThemeId
-                      - blocks
-                      - pageTheme
                     description: The updated page with all relations
                 required:
                   - page
@@ -8132,92 +7749,11 @@ paths:
                 socialIcons:
                   nullable: true
                   description: Social media icons configuration, can be null
-                pages:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      slug:
-                        type: string
-                        description: URL-friendly path segment for the page
-                      name:
-                        type: string
-                        description: Name of the page, can be null
-                        nullable: true
-                      description:
-                        type: string
-                        description: Description of the page content, can be null
-                        nullable: true
-                      bannerMedia:
-                        nullable: true
-                        description: Banner media for the page, can be null
-                      logoMedia:
-                        nullable: true
-                        description: Logo media for the page, can be null
-                      socialIcons:
-                        nullable: true
-                        description: Social media icons configuration, can be null
-                      position:
-                        default: 1
-                        type: number
-                        description: Display position of the page within the site
-                      pageTheme:
-                        type: object
-                        properties:
-                          content:
-                            nullable: true
-                            description: Theme content configuration, can be null
-                          isComponent:
-                            default: false
-                            type: boolean
-                            description: Whether this theme is a reusable component
-                          componentPageThemeId:
-                            type: string
-                            description: ID of the parent component theme if this is an instance, can be null
-                            nullable: true
-                        description: Theme for the page
-                      blocks:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            name:
-                              type: string
-                              description: Name of the block
-                            content:
-                              nullable: true
-                              description: Content of the block, can be null
-                            kind:
-                              type: string
-                              description: Type or category of the block, can be null
-                              nullable: true
-                            isComponent:
-                              default: false
-                              type: boolean
-                              description: Whether this block is a component
-                            componentBlockId:
-                              type: string
-                              format: uuid
-                              description: ID of the component block if this is an instance, can be null
-                              nullable: true
-                          required:
-                            - name
-                            - kind
-                            - componentBlockId
-                          description: Schema for creating a new block
-                        description: Content blocks for the page
-                    required:
-                      - slug
-                      - name
-                      - pageTheme
-                    description: Page to create with theme and blocks
-                  description: Array of pages to create with the site
               required:
                 - name
                 - slug
                 - businessType
-                - pages
-              description: Data for creating a new site with pages
+              description: Schema for creating a new site
       responses:
         '201':
           description: Successful site creation response
@@ -8295,67 +7831,6 @@ paths:
                       socialIcons:
                         nullable: true
                         description: Social media icons configuration, can be null
-                      pages:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            id:
-                              type: string
-                              format: uuid
-                              description: Unique identifier for the page
-                            slug:
-                              type: string
-                              description: URL-friendly path segment for the page
-                            name:
-                              type: string
-                              description: Name of the page, can be null
-                              nullable: true
-                            siteId:
-                              type: string
-                              format: uuid
-                              description: ID of the site this page belongs to
-                            createdAt:
-                              type: string
-                              format: date-time
-                              description: Date and time when the page was created
-                            updatedAt:
-                              type: string
-                              format: date-time
-                              description: Date and time when the page was last updated
-                            description:
-                              type: string
-                              description: Description of the page content, can be null
-                              nullable: true
-                            pageThemeId:
-                              type: string
-                              format: uuid
-                              description: ID of the theme applied to this page, can be null
-                              nullable: true
-                            bannerMedia:
-                              nullable: true
-                              description: Banner media for the page, can be null
-                            logoMedia:
-                              nullable: true
-                              description: Logo media for the page, can be null
-                            socialIcons:
-                              nullable: true
-                              description: Social media icons configuration, can be null
-                            position:
-                              default: 1
-                              type: number
-                              description: Display position of the page within the site
-                          required:
-                            - id
-                            - slug
-                            - name
-                            - siteId
-                            - createdAt
-                            - updatedAt
-                            - description
-                            - pageThemeId
-                          description: Schema for a page entity
-                        description: Array of pages associated with this site
                     required:
                       - id
                       - name
@@ -8369,8 +7844,7 @@ paths:
                       - homePageId
                       - timeZone
                       - workspaceId
-                      - pages
-                    description: The newly created site with all relations
+                    description: The newly created site
                 required:
                   - site
                 description: Successful site creation response
@@ -8402,19 +7876,18 @@ paths:
                 description: Unauthorized error response
       x-codeSamples:
         - lang: JavaScript
-          source: |-
+          source: >-
             import Fingertip from 'fingertip';
+
 
             const client = new Fingertip({
               apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
             });
 
-            const site = await client.sites.create({
-              businessType: 'businessType',
-              name: 'name',
-              pages: [{ name: 'name', pageTheme: {}, slug: 'slug' }],
-              slug: 'slug',
+
+            const site = await client.sites.create({ businessType: 'businessType', name: 'name', slug: 'slug'
             });
+
 
             console.log(site.site);
     get:
@@ -8701,67 +8174,6 @@ paths:
                       socialIcons:
                         nullable: true
                         description: Social media icons configuration, can be null
-                      pages:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            id:
-                              type: string
-                              format: uuid
-                              description: Unique identifier for the page
-                            slug:
-                              type: string
-                              description: URL-friendly path segment for the page
-                            name:
-                              type: string
-                              description: Name of the page, can be null
-                              nullable: true
-                            siteId:
-                              type: string
-                              format: uuid
-                              description: ID of the site this page belongs to
-                            createdAt:
-                              type: string
-                              format: date-time
-                              description: Date and time when the page was created
-                            updatedAt:
-                              type: string
-                              format: date-time
-                              description: Date and time when the page was last updated
-                            description:
-                              type: string
-                              description: Description of the page content, can be null
-                              nullable: true
-                            pageThemeId:
-                              type: string
-                              format: uuid
-                              description: ID of the theme applied to this page, can be null
-                              nullable: true
-                            bannerMedia:
-                              nullable: true
-                              description: Banner media for the page, can be null
-                            logoMedia:
-                              nullable: true
-                              description: Logo media for the page, can be null
-                            socialIcons:
-                              nullable: true
-                              description: Social media icons configuration, can be null
-                            position:
-                              default: 1
-                              type: number
-                              description: Display position of the page within the site
-                          required:
-                            - id
-                            - slug
-                            - name
-                            - siteId
-                            - createdAt
-                            - updatedAt
-                            - description
-                            - pageThemeId
-                          description: Schema for a page entity
-                        description: Array of pages associated with this site
                     required:
                       - id
                       - name
@@ -8775,8 +8187,7 @@ paths:
                       - homePageId
                       - timeZone
                       - workspaceId
-                      - pages
-                    description: The requested site with all relations
+                    description: The requested site
                 required:
                   - site
                 description: Successful site retrieval response
@@ -8953,67 +8364,6 @@ paths:
                       socialIcons:
                         nullable: true
                         description: Social media icons configuration, can be null
-                      pages:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            id:
-                              type: string
-                              format: uuid
-                              description: Unique identifier for the page
-                            slug:
-                              type: string
-                              description: URL-friendly path segment for the page
-                            name:
-                              type: string
-                              description: Name of the page, can be null
-                              nullable: true
-                            siteId:
-                              type: string
-                              format: uuid
-                              description: ID of the site this page belongs to
-                            createdAt:
-                              type: string
-                              format: date-time
-                              description: Date and time when the page was created
-                            updatedAt:
-                              type: string
-                              format: date-time
-                              description: Date and time when the page was last updated
-                            description:
-                              type: string
-                              description: Description of the page content, can be null
-                              nullable: true
-                            pageThemeId:
-                              type: string
-                              format: uuid
-                              description: ID of the theme applied to this page, can be null
-                              nullable: true
-                            bannerMedia:
-                              nullable: true
-                              description: Banner media for the page, can be null
-                            logoMedia:
-                              nullable: true
-                              description: Logo media for the page, can be null
-                            socialIcons:
-                              nullable: true
-                              description: Social media icons configuration, can be null
-                            position:
-                              default: 1
-                              type: number
-                              description: Display position of the page within the site
-                          required:
-                            - id
-                            - slug
-                            - name
-                            - siteId
-                            - createdAt
-                            - updatedAt
-                            - description
-                            - pageThemeId
-                          description: Schema for a page entity
-                        description: Array of pages associated with this site
                     required:
                       - id
                       - name
@@ -9027,8 +8377,7 @@ paths:
                       - homePageId
                       - timeZone
                       - workspaceId
-                      - pages
-                    description: The updated site with all relations
+                    description: The updated site
                 required:
                   - site
                 description: Successful site update response
