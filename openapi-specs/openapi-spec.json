@@ -6842,18 +6842,6 @@ paths:
                 required:
                   - message
                 description: Page not found error response
-      x-codeSamples:
-        - lang: JavaScript
-          source: |-
-            import Fingertip from 'fingertip';
-
-            const client = new Fingertip({
-              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
-            });
-
-            const theme = await client.pages.theme.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
-
-            console.log(theme.pageTheme);
   /v1/pages/{pageId}/theme/patch:
     patch:
       description: Applies JSON Patch operations to the theme content field
@@ -6970,6 +6958,18 @@ paths:
                 required:
                   - message
                 description: Page or theme not found error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+            const response = await client.pages.theme.patch('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+
+            console.log(response.pageTheme);
   /v1/quotes:
     get:
       description: Retrieves a paginated list of quotes for sites the user has access to
@@ -7506,6 +7506,18 @@ paths:
                 required:
                   - message
                 description: Unauthorized error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+            const response = await client.quotes.accept('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+
+            console.log(response.success);
   /v1/quotes/{quoteId}/decline:
     post:
       description: Declines a store quote
@@ -7568,6 +7580,18 @@ paths:
                 required:
                   - message
                 description: Unauthorized error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: process.env['FINGERTIP_API_KEY'], // This is the default and can be omitted
+            });
+
+            const response = await client.quotes.decline('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+
+            console.log(response.success);
   /v1/quotes/{quoteId}:
     delete:
       description: Deletes a store quote
