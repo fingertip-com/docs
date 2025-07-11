@@ -6854,6 +6854,122 @@ paths:
             const theme = await client.pages.theme.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
 
             console.log(theme.pageTheme);
+  /v1/pages/{pageId}/theme/patch:
+    patch:
+      description: Applies JSON Patch operations to the theme content field
+      summary: Apply JSON patches to page theme content
+      tags: []
+      parameters:
+        - name: pageId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID of the page to patch the theme content for
+      operationId: patchPageTheme
+      requestBody:
+        description: Body
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  op:
+                    type: string
+                    enum:
+                      - add
+                      - remove
+                      - replace
+                      - move
+                      - copy
+                      - test
+                    description: The operation to perform
+                  path:
+                    type: string
+                    description: JSON pointer to the target location
+                  value:
+                    nullable: true
+                    description: Value for add, replace, and test operations
+                  from:
+                    type: string
+                    description: Source path for move and copy operations
+                required:
+                  - op
+                  - path
+                description: JSON Patch operation following RFC 6902
+              description: Array of JSON Patch operations to apply
+      responses:
+        '200':
+          description: Successful patch application response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pageTheme:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier for the page theme
+                      content:
+                        nullable: true
+                        description: Theme content configuration, can be null
+                      createdAt:
+                        type: string
+                        format: date-time
+                        description: Date and time when the theme was created
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        description: Date and time when the theme was last updated
+                      isComponent:
+                        default: false
+                        type: boolean
+                        description: Whether this theme is a reusable component
+                      componentPageThemeId:
+                        type: string
+                        description: ID of the parent component theme if this is an instance, can be null
+                        nullable: true
+                    required:
+                      - id
+                      - createdAt
+                      - updatedAt
+                      - componentPageThemeId
+                    description: The updated page theme after applying patches
+                required:
+                  - pageTheme
+                description: Successful patch application response
+        '400':
+          description: Invalid patch operation error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Invalid patch operation error response
+        '404':
+          description: Page or theme not found error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Page or theme not found error response
   /v1/quotes:
     get:
       description: Retrieves a paginated list of quotes for sites the user has access to
