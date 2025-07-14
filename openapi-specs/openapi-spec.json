@@ -6459,18 +6459,6 @@ paths:
                 required:
                   - message
                 description: Page not found error response
-      x-codeSamples:
-        - lang: JavaScript
-          source: |-
-            import Fingertip from 'fingertip';
-
-            const client = new Fingertip({
-              apiKey: 'My API Key',
-            });
-
-            const response = await client.pages.theme.upsert('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
-
-            console.log(response.pageTheme);
   /v1/pages/{pageId}/theme/patch:
     patch:
       description: Applies JSON Patch operations to the theme content field
