@@ -1408,12 +1408,13 @@ paths:
             format: uuid
         - name: sortBy
           in: query
-          description: 'Field to sort by (default: updatedAt)'
+          description: 'Field to sort by (default: startTime)'
           schema:
             type: string
             enum:
               - createdAt
               - updatedAt
+              - startTime
         - name: sortDirection
           in: query
           description: 'Sort direction (default: desc)'
@@ -1734,12 +1735,13 @@ paths:
             format: uuid
         - name: sortBy
           in: query
-          description: 'Field to sort by (default: updatedAt)'
+          description: 'Field to sort by (default: startTime)'
           schema:
             type: string
             enum:
               - createdAt
               - updatedAt
+              - startTime
         - name: sortDirection
           in: query
           description: 'Sort direction (default: desc)'
@@ -7071,154 +7073,6 @@ paths:
             const response = await client.quotes.send('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { siteSlug:
             'siteSlug' });
 
-
-            console.log(response.success);
-  /v1/quotes/{quoteId}/accept:
-    post:
-      description: Accepts a store quote
-      summary: Accept store quote
-      tags: []
-      parameters:
-        - name: quoteId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-          description: Quote ID
-      operationId: acceptStoreQuote
-      requestBody:
-        description: Body
-        content:
-          application/json:
-            schema:
-              type: object
-              properties: {}
-              description: Empty body for accept request
-      responses:
-        '200':
-          description: Successful accept response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    description: Success status
-                required:
-                  - success
-                description: Successful accept response
-        '400':
-          description: Bad request error response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Error message describing what went wrong
-                required:
-                  - message
-                description: Bad request error response
-        '401':
-          description: Unauthorized error response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Error message describing what went wrong
-                required:
-                  - message
-                description: Unauthorized error response
-      x-codeSamples:
-        - lang: JavaScript
-          source: |-
-            import Fingertip from 'fingertip';
-
-            const client = new Fingertip({
-              apiKey: 'My API Key',
-            });
-
-            const response = await client.quotes.accept('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
-
-            console.log(response.success);
-  /v1/quotes/{quoteId}/decline:
-    post:
-      description: Declines a store quote
-      summary: Decline store quote
-      tags: []
-      parameters:
-        - name: quoteId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-          description: Quote ID
-      operationId: declineStoreQuote
-      requestBody:
-        description: Body
-        content:
-          application/json:
-            schema:
-              type: object
-              properties: {}
-              description: Empty body for decline request
-      responses:
-        '200':
-          description: Successful decline response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    description: Success status
-                required:
-                  - success
-                description: Successful decline response
-        '400':
-          description: Bad request error response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Error message describing what went wrong
-                required:
-                  - message
-                description: Bad request error response
-        '401':
-          description: Unauthorized error response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Error message describing what went wrong
-                required:
-                  - message
-                description: Unauthorized error response
-      x-codeSamples:
-        - lang: JavaScript
-          source: |-
-            import Fingertip from 'fingertip';
-
-            const client = new Fingertip({
-              apiKey: 'My API Key',
-            });
-
-            const response = await client.quotes.decline('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
 
             console.log(response.success);
   /v1/quotes/{quoteId}:
