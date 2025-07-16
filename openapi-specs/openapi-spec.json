@@ -7123,6 +7123,18 @@ paths:
                 required:
                   - message
                 description: Unauthorized error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: 'My API Key',
+            });
+
+            const response = await client.quotes.accept('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+
+            console.log(response.success);
   /v1/quotes/{quoteId}/decline:
     post:
       description: Declines a store quote
@@ -7185,6 +7197,18 @@ paths:
                 required:
                   - message
                 description: Unauthorized error response
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: 'My API Key',
+            });
+
+            const response = await client.quotes.decline('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+
+            console.log(response.success);
   /v1/quotes/{quoteId}:
     delete:
       description: Deletes a store quote
