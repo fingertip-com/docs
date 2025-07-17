@@ -12197,8 +12197,7 @@ paths:
           description: 'Number of results to return (default: 10, max: 20)'
           schema:
             type: number
-            minimum: 1
-            maximum: 20
+            nullable: true
       operationId: searchArticles
       responses:
         '200':
