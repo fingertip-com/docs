@@ -2971,13 +2971,13 @@ paths:
       summary: List form responses
       tags: []
       parameters:
-        - name: form_template_id
+        - name: formTemplateId
           in: query
           description: ID of the form template to retrieve responses for
           required: true
           schema:
             type: string
-        - name: site_id
+        - name: siteId
           in: query
           description: ID of the site to retrieve responses for
           required: true
@@ -3072,8 +3072,8 @@ paths:
 
             // Automatically fetches more pages as needed.
             for await (const formResponseListResponse of client.formResponses.list({
-              form_template_id: 'form_template_id',
-              site_id: 'site_id',
+              formTemplateId: 'formTemplateId',
+              siteId: 'siteId',
             })) {
               console.log(formResponseListResponse);
             }
@@ -3083,7 +3083,7 @@ paths:
       summary: List sample form responses
       tags: []
       parameters:
-        - name: form_template_slug
+        - name: formTemplateSlug
           in: query
           description: Slug of the form template to retrieve responses for
           required: true
@@ -3178,7 +3178,7 @@ paths:
 
             // Automatically fetches more pages as needed.
             for await (const formResponseListSampleResponse of client.formResponses.listSample({
-              form_template_slug: 'form_template_slug',
+              formTemplateSlug: 'formTemplateSlug',
             })) {
               console.log(formResponseListSampleResponse);
             }
@@ -12176,6 +12176,100 @@ paths:
 
 
             console.log(workspaceMembership.success);
+  /help-docs/articles:
+    get:
+      description: >-
+        Search through help documentation articles using full-text search. Returns articles ordered by
+        relevance.
+      summary: Search help documentation articles
+      tags: []
+      parameters:
+        - name: search
+          in: query
+          description: Search query string
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 100
+        - name: limit
+          in: query
+          description: 'Number of results to return (default: 10, max: 20)'
+          schema:
+            type: number
+            minimum: 1
+            maximum: 20
+      operationId: searchArticles
+      responses:
+        '200':
+          description: Successful search response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  articles:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          description: Unique identifier for the article
+                        title:
+                          type: string
+                          description: Title of the article
+                        body:
+                          type: string
+                          description: Full content body of the article
+                        url:
+                          type: string
+                          description: Direct URL to the article
+                          nullable: true
+                        relevanceScore:
+                          type: number
+                          description: Search relevance score
+                      required:
+                        - id
+                        - title
+                        - body
+                        - url
+                        - relevanceScore
+                      description: Help documentation article
+                    description: Array of matching articles
+                  total:
+                    type: number
+                    description: Total number of matching articles
+                required:
+                  - articles
+                  - total
+                description: Successful search response
+        '400':
+          description: Bad request - invalid query parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Bad request - invalid query parameters
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message describing what went wrong
+                required:
+                  - message
+                description: Internal server error
 info:
   title: Fingertip Public API
   version: 1.0.0
