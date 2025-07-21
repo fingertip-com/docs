@@ -3654,10 +3654,11 @@ paths:
             enum:
               - DRAFT
               - PENDING
-              - PAID
               - VOID
-              - OVERDUE
+              - PAID
+              - UNPAID
               - REFUNDED
+              - PROCESSING
       operationId: getInvoices
       responses:
         '200':
@@ -3684,10 +3685,11 @@ paths:
                           enum:
                             - DRAFT
                             - PENDING
-                            - PAID
                             - VOID
-                            - OVERDUE
+                            - PAID
+                            - UNPAID
                             - REFUNDED
+                            - PROCESSING
                           description: Current status of the invoice
                         currency:
                           type: string
@@ -3841,11 +3843,12 @@ paths:
                   enum:
                     - DRAFT
                     - PENDING
-                    - PAID
                     - VOID
-                    - OVERDUE
+                    - PAID
+                    - UNPAID
                     - REFUNDED
-                  description: Invoice status
+                    - PROCESSING
+                  description: Invoice status (defaults to DRAFT)
                 dueAt:
                   type: string
                   description: Due date (ISO string)
@@ -3928,7 +3931,6 @@ paths:
               required:
                 - siteId
                 - siteContactId
-                - status
                 - invoiceItems
               description: Store invoice creation data
       responses:
@@ -3985,7 +3987,6 @@ paths:
               invoiceItems: [{ description: 'description', quantity: 0, taxRate: 0, unitPriceInCents: 0 }],
               siteContactId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
               siteId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-              status: 'DRAFT',
             });
 
             console.log(invoice.invoiceId);
@@ -7576,7 +7577,6 @@ paths:
                   type: string
                   description: URL-friendly identifier for the site
                 status:
-                  default: ENABLED
                   type: string
                   enum:
                     - EMPTY
@@ -7618,6 +7618,7 @@ paths:
               required:
                 - name
                 - slug
+                - status
                 - businessType
               description: Schema for creating a new site
       responses:
@@ -7658,7 +7659,6 @@ paths:
                         description: Custom plan override for the site, can be null
                         nullable: true
                       status:
-                        default: ENABLED
                         type: string
                         enum:
                           - EMPTY
@@ -7705,6 +7705,7 @@ paths:
                       - createdAt
                       - updatedAt
                       - overridePlan
+                      - status
                       - locationId
                       - businessType
                       - homePageId
@@ -7742,18 +7743,19 @@ paths:
                 description: Unauthorized error response
       x-codeSamples:
         - lang: JavaScript
-          source: >-
+          source: |-
             import Fingertip from 'fingertip';
-
 
             const client = new Fingertip({
               apiKey: 'My API Key',
             });
 
-
-            const site = await client.sites.create({ businessType: 'businessType', name: 'name', slug: 'slug'
+            const site = await client.sites.create({
+              businessType: 'businessType',
+              name: 'name',
+              slug: 'slug',
+              status: 'EMPTY',
             });
-
 
             console.log(site.site);
     get:
@@ -7855,7 +7857,6 @@ paths:
                           description: Custom plan override for the site, can be null
                           nullable: true
                         status:
-                          default: ENABLED
                           type: string
                           enum:
                             - EMPTY
@@ -7902,6 +7903,7 @@ paths:
                         - createdAt
                         - updatedAt
                         - overridePlan
+                        - status
                         - locationId
                         - businessType
                         - homePageId
@@ -8001,7 +8003,6 @@ paths:
                         description: Custom plan override for the site, can be null
                         nullable: true
                       status:
-                        default: ENABLED
                         type: string
                         enum:
                           - EMPTY
@@ -8048,6 +8049,7 @@ paths:
                       - createdAt
                       - updatedAt
                       - overridePlan
+                      - status
                       - locationId
                       - businessType
                       - homePageId
@@ -8113,7 +8115,6 @@ paths:
                   type: string
                   description: URL-friendly identifier for the site
                 status:
-                  default: ENABLED
                   type: string
                   enum:
                     - EMPTY
@@ -8191,7 +8192,6 @@ paths:
                         description: Custom plan override for the site, can be null
                         nullable: true
                       status:
-                        default: ENABLED
                         type: string
                         enum:
                           - EMPTY
@@ -8238,6 +8238,7 @@ paths:
                       - createdAt
                       - updatedAt
                       - overridePlan
+                      - status
                       - locationId
                       - businessType
                       - homePageId
@@ -10761,7 +10762,6 @@ paths:
                               description: Custom plan override for the site, can be null
                               nullable: true
                             status:
-                              default: ENABLED
                               type: string
                               enum:
                                 - EMPTY
@@ -10808,6 +10808,7 @@ paths:
                             - createdAt
                             - updatedAt
                             - overridePlan
+                            - status
                             - locationId
                             - businessType
                             - homePageId
@@ -10936,7 +10937,6 @@ paths:
                               description: Custom plan override for the site, can be null
                               nullable: true
                             status:
-                              default: ENABLED
                               type: string
                               enum:
                                 - EMPTY
@@ -10983,6 +10983,7 @@ paths:
                             - createdAt
                             - updatedAt
                             - overridePlan
+                            - status
                             - locationId
                             - businessType
                             - homePageId
@@ -11123,7 +11124,6 @@ paths:
                                 description: Custom plan override for the site, can be null
                                 nullable: true
                               status:
-                                default: ENABLED
                                 type: string
                                 enum:
                                   - EMPTY
@@ -11170,6 +11170,7 @@ paths:
                               - createdAt
                               - updatedAt
                               - overridePlan
+                              - status
                               - locationId
                               - businessType
                               - homePageId
