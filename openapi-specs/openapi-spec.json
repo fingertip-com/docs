@@ -7618,7 +7618,6 @@ paths:
               required:
                 - name
                 - slug
-                - status
                 - businessType
               description: Schema for creating a new site
       responses:
@@ -7705,7 +7704,6 @@ paths:
                       - createdAt
                       - updatedAt
                       - overridePlan
-                      - status
                       - locationId
                       - businessType
                       - homePageId
@@ -7743,19 +7741,18 @@ paths:
                 description: Unauthorized error response
       x-codeSamples:
         - lang: JavaScript
-          source: |-
+          source: >-
             import Fingertip from 'fingertip';
+
 
             const client = new Fingertip({
               apiKey: 'My API Key',
             });
 
-            const site = await client.sites.create({
-              businessType: 'businessType',
-              name: 'name',
-              slug: 'slug',
-              status: 'EMPTY',
+
+            const site = await client.sites.create({ businessType: 'businessType', name: 'name', slug: 'slug'
             });
+
 
             console.log(site.site);
     get:
@@ -7903,7 +7900,6 @@ paths:
                         - createdAt
                         - updatedAt
                         - overridePlan
-                        - status
                         - locationId
                         - businessType
                         - homePageId
@@ -8049,7 +8045,6 @@ paths:
                       - createdAt
                       - updatedAt
                       - overridePlan
-                      - status
                       - locationId
                       - businessType
                       - homePageId
@@ -8238,7 +8233,6 @@ paths:
                       - createdAt
                       - updatedAt
                       - overridePlan
-                      - status
                       - locationId
                       - businessType
                       - homePageId
@@ -10808,7 +10802,6 @@ paths:
                             - createdAt
                             - updatedAt
                             - overridePlan
-                            - status
                             - locationId
                             - businessType
                             - homePageId
@@ -10983,7 +10976,6 @@ paths:
                             - createdAt
                             - updatedAt
                             - overridePlan
-                            - status
                             - locationId
                             - businessType
                             - homePageId
@@ -11170,7 +11162,6 @@ paths:
                               - createdAt
                               - updatedAt
                               - overridePlan
-                              - status
                               - locationId
                               - businessType
                               - homePageId
