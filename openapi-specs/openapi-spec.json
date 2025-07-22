@@ -12261,6 +12261,18 @@ paths:
                 required:
                   - message
                 description: Internal server error
+      x-codeSamples:
+        - lang: JavaScript
+          source: |-
+            import Fingertip from 'fingertip';
+
+            const client = new Fingertip({
+              apiKey: 'My API Key',
+            });
+
+            const response = await client.helpDocs.searchArticles({ search: 'xxx' });
+
+            console.log(response.articles);
 info:
   title: Fingertip Public API
   version: 1.0.0
