@@ -1406,23 +1406,6 @@ paths:
           schema:
             type: string
             format: uuid
-        - name: sortBy
-          in: query
-          description: 'Field to sort by (default: startTime)'
-          schema:
-            type: string
-            enum:
-              - createdAt
-              - updatedAt
-              - startTime
-        - name: sortDirection
-          in: query
-          description: 'Sort direction (default: desc)'
-          schema:
-            type: string
-            enum:
-              - asc
-              - desc
       operationId: getBookings
       responses:
         '200':
@@ -1733,23 +1716,6 @@ paths:
           schema:
             type: string
             format: uuid
-        - name: sortBy
-          in: query
-          description: 'Field to sort by (default: startTime)'
-          schema:
-            type: string
-            enum:
-              - createdAt
-              - updatedAt
-              - startTime
-        - name: sortDirection
-          in: query
-          description: 'Sort direction (default: desc)'
-          schema:
-            type: string
-            enum:
-              - asc
-              - desc
       operationId: getBookingRequests
       responses:
         '200':
